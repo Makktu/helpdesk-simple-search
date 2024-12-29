@@ -1,26 +1,39 @@
-# Helpdesk Location Search
+# Helpdesk Simple Search
 
-A simple, lightweight search application for finding rooms and departments in the UHCW Walsgrave building (hopefully more locations to be added).
+A lightweight, fast search tool for quickly finding room locations across UHCW sites. Built with vanilla JavaScript and CSS, no frameworks required.
 
-No database, no server - just pure HTML, CSS, and JavaScript.
+## The Holy Grail appears 
+
+What started as a simple JSON-based room finder has evolved into something a touch more comprehensive thanks to the discovery of "The Holy Grail of Helpdesk" - a complete CSV dataset of all UHCW locations. All this time, all sites were hidden in plain sight within Concept (Facilities>Locations).
+
+This miraculous find means we now have comprehensive location data for:
+- Walsgrave Hospital
+- Hospital of Rugby St Cross
+- the FM Building
+- the Clinical Sciences Building
+- those EPR 'Portkabins' (not my spelling, guv)
+- and the MHU - (better to have this and not need it, than - you know the rest)
 
 ## Features
 
-- Fast, real-time search as you type
-- Search by room number or department name (partial or full terms work)
-- Mobile-friendly with card-style results
-- Dark/light mode toggle
-- Loads instantly, works offline
-- Zero dependencies - no frameworks or libraries needed
+- Lightning-fast search across all UHCW sites
+- Search by room number, department name, or partial terms
+- Clean, Google-inspired interface
+- Dark mode support
+- Mobile-responsive design
 
-## How It Works
+## Usage
 
-The app uses a simple JSON file to store location data, making it extremely portable and easy to maintain. Just update the JSON file to update the search data - no database shenanigans or backend sorcery required.
+Simply start typing in order to search. The tool will instantly filter results as you type, searching across:
+- Site
+- Building
+- Department
+- Description
+- Room Number
+- Floor
 
-## License
+## Issues
 
-This project is completely free to use, modify, and redistribute. No attribution required - feel free to take the entire project or any parts of the code and use them however you like.
+Some of the data is a little malformed, but the results are still accurate and available.
 
-## Hosting
-
-Can be hosted on any static web hosting service (GitHub Pages, Netlify, etc.) or embedded into Google Sites using an iframe.
+E.g. if you search 'rainsbrook', the first results displayed are for rooms that are no longer used, and you will have to scroll down to see the newer rooms that you're probably looking for. There are a few isolated cases of things like that.

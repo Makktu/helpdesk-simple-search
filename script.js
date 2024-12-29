@@ -25,41 +25,54 @@ if (currentTheme) {
 // Function to load and search location data
 async function searchLocations(searchTerm) {
     try {
-        const response = await fetch('locationData.json');
+        const response = await fetch('locations.csv');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        const csvText = await response.text();
         
         // Convert search term to lowercase for case-insensitive search
         searchTerm = searchTerm.toLowerCase();
         
-        // Create an array to store all matching results
+        // Parse CSV
         const results = [];
+        const lines = csvText.split('\n');
+        const headers = lines[0].split(',').map(header => header.replace(/"/g, '').trim());
         
-        // If data is not an array, treat it as a single object
-        const dataToProcess = Array.isArray(data) ? data : [data];
-        
-        // Loop through each object in the array
-        dataToProcess.forEach(locationGroup => {
-            // Ensure locationGroup is an object
-            if (typeof locationGroup === 'object' && locationGroup !== null) {
-                // Loop through each numbered key in the location group
-                Object.entries(locationGroup).forEach(([key, location]) => {
-                    if (location && typeof location === 'object') {
-                        if (
-                            location['Room Num']?.toLowerCase().includes(searchTerm) ||
-                            location['Description']?.toLowerCase().includes(searchTerm) ||
-                            location['Wing']?.toLowerCase().includes(searchTerm) ||
-                            (location['Department'] && location['Department'].toLowerCase().includes(searchTerm))
-                        ) {
-                            results.push(location);
-                        }
-                    }
-                });
+        // Process each line after headers
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue; // Skip empty lines
+            
+            // Split lines by comma
+            const values = lines[i].split(',').map(value => {
+                // Remove quotes, and trim
+                return value.replace(/^["']|["']$/g, '').trim();
+            });
+            
+            // Map CSV columns to expected format using explicit indexes - yes, this is a kludgy way of doing it, but I am a hack and it works...
+            const mappedLocation = {
+                'Site': values[0] || '-',
+                'Building': values[1] || '-',
+                'Floor': values[2] || '-',
+                'Description': values[4] || '-',
+                'Room Num': values[5] || '-',
+                'Department': (values[9] || '-').replace(/["']/g, '') // Extra cleanup for Department
+            };
+
+            console.log('Mapped location:', mappedLocation);
+
+            // Search relevant fields only
+            if (
+                mappedLocation['Site']?.toLowerCase().includes(searchTerm) ||
+                mappedLocation['Building']?.toLowerCase().includes(searchTerm) ||
+                mappedLocation['Department']?.toLowerCase().includes(searchTerm) ||
+                mappedLocation['Description']?.toLowerCase().includes(searchTerm) ||
+                mappedLocation['Room Num']?.toLowerCase().includes(searchTerm) ||
+                mappedLocation['Floor']?.toLowerCase().includes(searchTerm)
+            ) {
+                results.push(mappedLocation);
             }
-        });
-        
+        }
         return results;
     } catch (error) {
         console.error('Error loading or searching location data:', error);
@@ -83,7 +96,7 @@ function displayResults(results) {
         return;
     }
     
-    // Hide no results message and show table
+    // Hide the no results message and show table
     noResults.style.display = 'none';
     resultsContainer.style.display = 'block';
     
@@ -91,11 +104,12 @@ function displayResults(results) {
     results.forEach(location => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td data-label="Room">${location['Room Num']}</td>
-            <td data-label="Description">${location['Description']}</td>
-            <td data-label="Floor">${location['Floor']}</td>
-            <td data-label="Wing">${location['Wing']}</td>
+            <td data-label="Site">${location['Site'] || '-'}</td>
+            <td data-label="Building">${location['Building'] || '-'}</td>
             <td data-label="Department">${location['Department'] || '-'}</td>
+            <td data-label="Description">${location['Description'] || '-'}</td>
+            <td data-label="Room">${location['Room Num'] || '-'}</td>
+            <td data-label="Floor">${location['Floor'] || '-'}</td>
         `;
         resultsBody.appendChild(row);
     });
