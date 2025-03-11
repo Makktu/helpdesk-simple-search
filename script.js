@@ -22,8 +22,55 @@ if (currentTheme) {
     toggleIcon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
 }
 
+// Global variables for filters and data
+let allLocations = [];
+let filterOptions = {
+    sites: new Set(),
+    locations: new Set()
+};
+let activeFilters = {
+    site: '',
+    location: ''
+};
+
 // Function to load and search location data
 async function searchLocations(searchTerm) {
+    try {
+        // If we haven't loaded the data yet, load it
+        if (allLocations.length === 0) {
+            await loadLocationData();
+        }
+        
+        // Convert search term to lowercase for case-insensitive search
+        searchTerm = searchTerm.toLowerCase();
+        
+        // Filter results based on search term and active filters
+        const results = allLocations.filter(location => {
+            // First check if the location matches the active filters
+            if (activeFilters.site && location['Site'] !== activeFilters.site) return false;
+            if (activeFilters.location && location['Building'] !== activeFilters.location) return false;
+            
+            // Then check if it matches the search term
+            return (
+                location['Site']?.toLowerCase().includes(searchTerm) ||
+                location['Building']?.toLowerCase().includes(searchTerm) ||
+                location['Department']?.toLowerCase().includes(searchTerm) ||
+                location['Description']?.toLowerCase().includes(searchTerm) ||
+                location['Room Num']?.toLowerCase().includes(searchTerm) ||
+                location['Floor']?.toLowerCase().includes(searchTerm)
+            );
+        });
+        
+        return results;
+    } catch (error) {
+        console.error('Error loading or searching location data:', error);
+        alert('Error loading location data: ' + error.message);
+        return [];
+    }
+}
+
+// Function to load all location data
+async function loadLocationData() {
     try {
         const response = await fetch('locations.csv');
         if (!response.ok) {
@@ -31,15 +78,18 @@ async function searchLocations(searchTerm) {
         }
         const csvText = await response.text();
         
-        // Convert search term to lowercase for case-insensitive search
-        searchTerm = searchTerm.toLowerCase();
-        
         // Parse CSV
-        const results = [];
         const lines = csvText.split('\n');
         const headers = lines[0].split(',').map(header => header.replace(/"/g, '').trim());
         
+        // Reset filter options
+        filterOptions = {
+            sites: new Set(),
+            locations: new Set()
+        };
+        
         // Process each line after headers
+        allLocations = [];
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue; // Skip empty lines
             
@@ -49,7 +99,7 @@ async function searchLocations(searchTerm) {
                 return value.replace(/^["']|["']$/g, '').trim();
             });
             
-            // Map CSV columns to expected format using explicit indexes - yes, this is a kludgy way of doing it, but I am a hack and it works...
+            // Map CSV columns to expected format
             const mappedLocation = {
                 'Site': values[0] || '-',
                 'Building': values[1] || '-',
@@ -58,26 +108,89 @@ async function searchLocations(searchTerm) {
                 'Room Num': values[5] || '-',
                 'Department': (values[9] || '-').replace(/["']/g, '') // Extra cleanup for Department
             };
-
-            console.log('Mapped location:', mappedLocation);
-
-            // Search relevant fields only
-            if (
-                mappedLocation['Site']?.toLowerCase().includes(searchTerm) ||
-                mappedLocation['Building']?.toLowerCase().includes(searchTerm) ||
-                mappedLocation['Department']?.toLowerCase().includes(searchTerm) ||
-                mappedLocation['Description']?.toLowerCase().includes(searchTerm) ||
-                mappedLocation['Room Num']?.toLowerCase().includes(searchTerm) ||
-                mappedLocation['Floor']?.toLowerCase().includes(searchTerm)
-            ) {
-                results.push(mappedLocation);
-            }
+            
+            // Add to all locations array
+            allLocations.push(mappedLocation);
+            
+            // Add to filter options if not empty
+            if (mappedLocation['Site'] !== '-') filterOptions.sites.add(mappedLocation['Site']);
+            if (mappedLocation['Building'] !== '-') filterOptions.locations.add(mappedLocation['Building']);
         }
-        return results;
+        
+        // Populate filter dropdowns
+        populateFilterDropdowns();
+        
+        return allLocations;
     } catch (error) {
-        console.error('Error loading or searching location data:', error);
-        alert('Error loading location data: ' + error.message);
-        return [];
+        console.error('Error loading location data:', error);
+        throw error;
+    }
+}
+
+// Function to populate filter dropdowns
+function populateFilterDropdowns() {
+    const siteFilter = document.getElementById('siteFilter');
+    const buildingFilter = document.getElementById('buildingFilter');
+    
+    // Clear existing options except the first one
+    siteFilter.innerHTML = '<option value="">All Sites</option>';
+    buildingFilter.innerHTML = '<option value="">All Locations</option>';
+    
+    // Add sorted options to each dropdown
+    [...filterOptions.sites].sort().forEach(site => {
+        const option = document.createElement('option');
+        option.value = site;
+        option.textContent = site;
+        siteFilter.appendChild(option);
+    });
+    
+    [...filterOptions.locations].sort().forEach(location => {
+        const option = document.createElement('option');
+        option.value = location;
+        option.textContent = location;
+        buildingFilter.appendChild(option);
+    });
+}
+
+// Function to apply filters and update search results
+async function applyFilters() {
+    const searchInput = document.getElementById('locationSearch');
+    const searchTerm = searchInput.value.trim();
+    
+    // Update reset button state
+    updateResetFiltersButtonState();
+    
+    // Update search results with current filters
+    const results = await searchLocations(searchTerm);
+    displayResults(results);
+}
+
+// Function to reset all filters
+function resetFilters() {
+    document.getElementById('siteFilter').value = '';
+    document.getElementById('buildingFilter').value = '';
+    
+    activeFilters = {
+        site: '',
+        location: ''
+    };
+    
+    // Update reset button state
+    updateResetFiltersButtonState();
+    
+    // Apply the reset filters
+    applyFilters();
+}
+
+// Function to update the reset filters button state
+function updateResetFiltersButtonState() {
+    const resetFiltersBtn = document.getElementById('resetFilters');
+    
+    // Check if any filters are active
+    if (activeFilters.site || activeFilters.location) {
+        resetFiltersBtn.classList.add('active');
+    } else {
+        resetFiltersBtn.classList.remove('active');
     }
 }
 
@@ -105,7 +218,7 @@ function displayResults(results) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td data-label="Site">${location['Site'] || '-'}</td>
-            <td data-label="Building">${location['Building'] || '-'}</td>
+            <td data-label="Location">${location['Building'] || '-'}</td>
             <td data-label="Department">${location['Department'] || '-'}</td>
             <td data-label="Description">${location['Description'] || '-'}</td>
             <td data-label="Room">${location['Room Num'] || '-'}</td>
@@ -115,10 +228,14 @@ function displayResults(results) {
     });
 }
 
-// Set up search input event listener
+// Set up search input and filter event listeners
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('locationSearch');
     const clearButton = document.getElementById('clearSearch');
+    const siteFilter = document.getElementById('siteFilter');
+    const buildingFilter = document.getElementById('buildingFilter');
+    const resetFiltersBtn = document.getElementById('resetFilters');
+    
     let debounceTimer;
 
     // Function to toggle clear button visibility
@@ -134,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.focus(); // Keep focus on input after clearing
     });
 
+    // Search input event handler
     searchInput.addEventListener('input', (e) => {
         toggleClearButton();
         clearTimeout(debounceTimer);
@@ -147,4 +265,24 @@ document.addEventListener('DOMContentLoaded', () => {
             displayResults(results);
         }, 300); // Debounce for 300ms to prevent too many searches
     });
+    
+    // Filter change event handlers
+    siteFilter.addEventListener('change', () => {
+        activeFilters.site = siteFilter.value;
+        applyFilters();
+    });
+    
+    buildingFilter.addEventListener('change', () => {
+        activeFilters.location = buildingFilter.value;
+        applyFilters();
+    });
+    
+    // Reset filters button event handler
+    resetFiltersBtn.addEventListener('click', resetFilters);
+    
+    // Initialize reset button state
+    updateResetFiltersButtonState();
+    
+    // Load data on initial page load
+    loadLocationData();
 });

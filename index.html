@@ -12,6 +12,49 @@
     </div>
     <div class="container">
         <div class="logo-container">
+            <div class="spring-decoration">
+                <!-- Flowers -->
+                <!-- <div class="flower flower1">
+                    <div class="flower-center"></div>
+                </div>
+                <div class="flower flower2">
+                    <div class="flower-center"></div>
+                </div> -->
+                <!-- <div class="flower flower3">
+                    <div class="flower-center"></div>
+                </div>
+                <div class="flower flower4">
+                    <div class="flower-center"></div>
+                </div> -->
+                
+                <!-- Grass -->
+                <div class="grass">
+                    <div class="grass-blade" style="left: 10%; height: 12px;"></div>
+                    <div class="grass-blade" style="left: 20%; height: 10px;"></div>
+                    <div class="grass-blade" style="left: 30%; height: 14px;"></div>
+                    <!-- <div class="grass-blade" style="left: 15%; height: 12px;"></div>
+                    <div class="grass-blade" style="left: 25%; height: 10px;"></div>
+                    <div class="grass-blade" style="left: 35%; height: 14px;"></div> -->
+                    <div class="grass-blade" style="left: 40%; height: 8px;"></div>
+                    <div class="grass-blade" style="left: 50%; height: 13px;"></div>
+                    <div class="grass-blade" style="left: 60%; height: 9px;"></div>
+                    <div class="grass-blade" style="left: 70%; height: 11px;"></div>
+                    <div class="grass-blade" style="left: 80%; height: 15px;"></div>
+                    <div class="grass-blade" style="left: 90%; height: 10px;"></div>
+                </div>
+                
+                <!-- Butterflies -->
+                <div class="butterfly butterfly1">
+                    <div class="butterfly-wing left"></div>
+                    <div class="butterfly-wing right"></div>
+                    <div class="butterfly-body"></div>
+                </div>
+                <div class="butterfly butterfly2">
+                    <div class="butterfly-wing left" style="background-color: #FF4081;"></div>
+                    <div class="butterfly-wing right" style="background-color: #FF4081;"></div>
+                    <div class="butterfly-body"></div>
+                </div>
+            </div>
             <h1>
                 <span class="blue">H</span><span class="red">e</span><span class="yellow">l</span><span class="blue">p</span><span class="green">d</span><span class="red">e</span><span class="yellow">s</span><span class="blue">k</span>
             </h1>
@@ -25,12 +68,27 @@
                     </svg>
                 </button>
             </div>
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="siteFilter">Site:</label>
+                    <select id="siteFilter" class="filter-select">
+                        <option value="">All Sites</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="buildingFilter">Location:</label>
+                    <select id="buildingFilter" class="filter-select">
+                        <option value="">All Locations</option>
+                    </select>
+                </div>
+                <button id="resetFilters" class="reset-filters-btn">Reset Filters</button>
+            </div>
             <div id="searchResults" class="search-results" style="display: none;">
                 <table>
                     <thead>
                         <tr>
                             <th>Site</th>
-                            <th>Building</th>
+                            <th>Location</th>
                             <th>Department</th>
                             <th>Description</th>
                             <th>Room Number</th>
@@ -55,8 +113,8 @@
                     </svg>
                     <h2>Tips</h2>
                 </div>
-                <img src="img/now_with_st_cross.png" alt="St Cross" class="st-cross-image">
-                <p>Search room numbers, departments, partial or full. E.g. search "security" or "renal" or just "aez" to find all matching locations, or search "porters" to find all porter-related locations at St Cross and Walsgrave.</p><br/><p>The database contains all location data for Walsgrave, Rugby St Cross, the FM Building, CSB, the EPR 'Portkabins' (as they're rendered) - and also the MHU.</p>
+                <!-- <img src="img/now_with_st_cross.png" alt="St Cross" class="st-cross-image"> -->
+                <p>Search for room numbers and departments, partial or full.</p><p>The database contains: Walsgrave, Rugby St Cross, the FM Building, CSB, the EPR 'Portkabins' - and the MHU.</p>
             </div>
         </div>
     </div>
