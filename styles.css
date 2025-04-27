@@ -51,13 +51,13 @@ body {
 .logo-container {
     text-align: center;
     margin-top: calc(35vh - 100px); /* Position logo above center */
-    margin-bottom: 30px;
+    margin-bottom: 12px;
     position: relative;
 }
 
 .logo-container h1 {
     font-size: 90px;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
     font-family: 'Product Sans', Arial, sans-serif;
     font-weight: 400;
     letter-spacing: -2px;
@@ -423,6 +423,11 @@ input:checked + .slider:before {
 
     .search-container {
         width: 90%;
+    }
+    
+    /* Hide filters container on mobile */
+    .filters-container {
+        display: none;
     }
 
     .buttons {
