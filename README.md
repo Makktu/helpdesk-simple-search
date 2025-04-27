@@ -37,3 +37,10 @@ Simply start typing in order to search. The tool will instantly filter results a
 Some of the data is a little malformed, but the results are still accurate and available.
 
 E.g. if you search 'rainsbrook', the first results displayed are for rooms that are no longer used, and you will have to scroll down to see the newer rooms that you're probably looking for. There are a few isolated cases of things like that.
+
+## Changelog
+
+### 27 April 2025
+- Improved mobile experience by hiding location filter dropdowns on small screens
+- Removed decorative elements from logo container to simplify interface
+- Reduced vertical spacing between logo and search input to use screen better.
