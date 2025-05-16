@@ -230,6 +230,12 @@ function displayResults(results) {
 
 // Set up search input and filter event listeners
 document.addEventListener('DOMContentLoaded', () => {
+    // Load the fly game script
+    if (!window.flyGame) {
+        const flyGameScript = document.createElement('script');
+        flyGameScript.src = 'flyGame.js';
+        document.head.appendChild(flyGameScript);
+    }
     const searchInput = document.getElementById('locationSearch');
     const clearButton = document.getElementById('clearSearch');
     const siteFilter = document.getElementById('siteFilter');
@@ -261,6 +267,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('searchResults').style.display = 'none';
                 return;
             }
+            
+            // Check for fly game trigger and end conditions
+            if (searchTerm.toLowerCase() === 'flies') {
+                // Start the fly game
+                window.flyGame.start();
+            } else if (searchTerm.toLowerCase() === 'no flies') {
+                // End the fly game
+                window.flyGame.stop();
+            } else if (searchTerm.toLowerCase() === 'make it rain') {
+                // Start the rain animation
+                window.rainAnimation.start();
+            }
+            
             const results = await searchLocations(searchTerm);
             displayResults(results);
         }, 300); // Debounce for 300ms to prevent too many searches

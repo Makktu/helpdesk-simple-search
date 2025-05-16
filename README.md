@@ -44,3 +44,7 @@ E.g. if you search 'rainsbrook', the first results displayed are for rooms that 
 - Improved mobile experience by hiding location filter dropdowns on small screens
 - Removed decorative elements from logo container to simplify interface
 - Reduced vertical spacing between logo and search input to use screen better.
+
+### 16 May 2025
+- Added 'make it rain' feature. Rain animation triggered when 'make it rain' is searched.
+- Added 'Fly Game' feature. A simple clicker game triggered when 'flies' is searched. (Enter 'no flies' to stop the game.)
