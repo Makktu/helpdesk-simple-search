@@ -11,6 +11,7 @@
     --hover-color: #f1f3f4;
     --tips-bg: #f8f9fa;
     --results-bg: #f5f7fa;
+    --kb-card-bg: #e8ecf0;
 }
 
 [data-theme="dark"] {
@@ -26,6 +27,7 @@
     --hover-color: #3c4043;
     --tips-bg: #303134;
     --results-bg: #1a1d21;
+    --kb-card-bg: #2d3135;
 }
 
 * {
@@ -392,7 +394,7 @@ body {
 
 /* Knowledge Base Card Styles */
 .knowledge-base-card {
-    background: var(--background-color);
+    background: var(--kb-card-bg);
     border-radius: 8px;
     padding: 24px;
     margin-bottom: 20px;
@@ -402,7 +404,7 @@ body {
 }
 
 .knowledge-base-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
 }
 
