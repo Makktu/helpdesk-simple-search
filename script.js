@@ -24,13 +24,12 @@ if (currentTheme) {
 
 // Global variables for filters and data
 let allLocations = [];
+let knowledgeBaseArticles = [];
 let filterOptions = {
   sites: new Set(),
-  locations: new Set(),
 };
 let activeFilters = {
   site: '',
-  location: '',
 };
 
 // Function to load and search location data
@@ -46,13 +45,8 @@ async function searchLocations(searchTerm) {
 
     // Filter results based on search term and active filters
     const results = allLocations.filter((location) => {
-      // First check if the location matches the active filters
+      // First check if the location matches the active site filter
       if (activeFilters.site && location['Site'] !== activeFilters.site)
-        return false;
-      if (
-        activeFilters.location &&
-        location['Building'] !== activeFilters.location
-      )
         return false;
 
       // Then check if it matches the search term
@@ -92,7 +86,6 @@ async function loadLocationData() {
     // Reset filter options
     filterOptions = {
       sites: new Set(),
-      locations: new Set(),
     };
 
     // Process each line after headers
@@ -122,12 +115,10 @@ async function loadLocationData() {
       // Add to filter options if not empty
       if (mappedLocation['Site'] !== '-')
         filterOptions.sites.add(mappedLocation['Site']);
-      if (mappedLocation['Building'] !== '-')
-        filterOptions.locations.add(mappedLocation['Building']);
     }
 
-    // Populate filter dropdowns
-    populateFilterDropdowns();
+    // Populate site filter radio buttons
+    populateSiteFilterRadios();
 
     return allLocations;
   } catch (error) {
@@ -136,28 +127,76 @@ async function loadLocationData() {
   }
 }
 
-// Function to populate filter dropdowns
-function populateFilterDropdowns() {
-  const siteFilter = document.getElementById('siteFilter');
-  const buildingFilter = document.getElementById('buildingFilter');
+// Function to load knowledge base data
+async function loadKnowledgeBase() {
+  try {
+    const response = await fetch('knowledge-base.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    knowledgeBaseArticles = data.articles || [];
+    return knowledgeBaseArticles;
+  } catch (error) {
+    console.error('Error loading knowledge base:', error);
+    // Don't throw - knowledge base is optional
+    return [];
+  }
+}
 
-  // Clear existing options except the first one
-  siteFilter.innerHTML = '<option value="">All Sites</option>';
-  buildingFilter.innerHTML = '<option value="">All Locations</option>';
+// Function to search knowledge base
+async function searchKnowledgeBase(searchTerm) {
+  try {
+    // If we haven't loaded the data yet, load it
+    if (knowledgeBaseArticles.length === 0) {
+      await loadKnowledgeBase();
+    }
 
-  // Add sorted options to each dropdown
-  [...filterOptions.sites].sort().forEach((site) => {
-    const option = document.createElement('option');
-    option.value = site;
-    option.textContent = site;
-    siteFilter.appendChild(option);
-  });
+    // Convert search term to lowercase for case-insensitive search
+    searchTerm = searchTerm.toLowerCase();
 
-  [...filterOptions.locations].sort().forEach((location) => {
-    const option = document.createElement('option');
-    option.value = location;
-    option.textContent = location;
-    buildingFilter.appendChild(option);
+    // Filter articles based on search term matching keywords, title, summary, or content
+    const results = knowledgeBaseArticles.filter((article) => {
+      return (
+        article.title?.toLowerCase().includes(searchTerm) ||
+        article.summary?.toLowerCase().includes(searchTerm) ||
+        article.content?.toLowerCase().includes(searchTerm) ||
+        article.category?.toLowerCase().includes(searchTerm) ||
+        article.keywords?.some((keyword) =>
+          keyword.toLowerCase().includes(searchTerm)
+        )
+      );
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error searching knowledge base:', error);
+    return [];
+  }
+}
+
+// Function to populate site filter radio buttons
+function populateSiteFilterRadios() {
+  const radioContainer = document.getElementById('siteFilterRadios');
+
+  // Keep the "All Sites" option, add other sites after it
+  const sortedSites = [...filterOptions.sites].sort();
+
+  sortedSites.forEach((site) => {
+    const label = document.createElement('label');
+    label.className = 'radio-option';
+
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'siteFilter';
+    input.value = site;
+
+    const span = document.createElement('span');
+    span.textContent = site;
+
+    label.appendChild(input);
+    label.appendChild(span);
+    radioContainer.appendChild(label);
   });
 }
 
@@ -166,45 +205,14 @@ async function applyFilters() {
   const searchInput = document.getElementById('locationSearch');
   const searchTerm = searchInput.value.trim();
 
-  // Update reset button state
-  updateResetFiltersButtonState();
-
-  // Update search results with current filters
-  const results = await searchLocations(searchTerm);
-  displayResults(results);
+  // Search both locations and knowledge base
+  const locationResults = await searchLocations(searchTerm);
+  const knowledgeResults = await searchKnowledgeBase(searchTerm);
+  displayResults(locationResults, knowledgeResults);
 }
 
-// Function to reset all filters
-function resetFilters() {
-  document.getElementById('siteFilter').value = '';
-  document.getElementById('buildingFilter').value = '';
-
-  activeFilters = {
-    site: '',
-    location: '',
-  };
-
-  // Update reset button state
-  updateResetFiltersButtonState();
-
-  // Apply the reset filters
-  applyFilters();
-}
-
-// Function to update the reset filters button state
-function updateResetFiltersButtonState() {
-  const resetFiltersBtn = document.getElementById('resetFilters');
-
-  // Check if any filters are active
-  if (activeFilters.site || activeFilters.location) {
-    resetFiltersBtn.classList.add('active');
-  } else {
-    resetFiltersBtn.classList.remove('active');
-  }
-}
-
-// Function to display search results
-function displayResults(results) {
+// Function to display search results (both locations and knowledge base)
+function displayResults(locationResults, knowledgeResults = []) {
   const resultsContainer = document.getElementById('searchResults');
   const resultsBody = document.getElementById('resultsBody');
   const noResults = document.getElementById('noResults');
@@ -212,38 +220,76 @@ function displayResults(results) {
   // Clear previous results
   resultsBody.innerHTML = '';
 
-  if (results.length === 0) {
+  // Clear any existing knowledge base cards
+  const existingKbCards = resultsContainer.querySelectorAll('.knowledge-base-card');
+  existingKbCards.forEach(card => card.remove());
+
+  const hasLocationResults = locationResults.length > 0;
+  const hasKnowledgeResults = knowledgeResults.length > 0;
+
+  if (!hasLocationResults && !hasKnowledgeResults) {
     resultsContainer.style.display = 'block';
     noResults.style.display = 'block';
     return;
   }
 
-  // Hide the no results message and show table
+  // Hide the no results message and show results
   noResults.style.display = 'none';
   resultsContainer.style.display = 'block';
 
-  // Add results to table
-  results.forEach((location) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-            <td data-label="Site">${location['Site'] || '-'}</td>
-            <td data-label="Location">${location['Building'] || '-'}</td>
-            <td data-label="Department">${location['Department'] || '-'}</td>
-            <td data-label="Description">${location['Description'] || '-'}</td>
-            <td data-label="Room">${location['Room Num'] || '-'}</td>
-            <td data-label="Floor">${location['Floor'] || '-'}</td>
-        `;
-    resultsBody.appendChild(row);
-  });
+  // Display knowledge base results first if any
+  if (hasKnowledgeResults) {
+    knowledgeResults.forEach((article) => {
+      const kbCard = document.createElement('div');
+      kbCard.className = 'knowledge-base-card';
+
+      // Format contacts as HTML list if they exist
+      let contactsHtml = '';
+      if (article.contacts && article.contacts.length > 0) {
+        contactsHtml = '<div class="kb-contacts"><strong>Contacts:</strong><ul>';
+        article.contacts.forEach(contact => {
+          contactsHtml += `<li>${contact}</li>`;
+        });
+        contactsHtml += '</ul></div>';
+      }
+
+      kbCard.innerHTML = `
+        <div class="kb-header">
+          <span class="kb-badge">${article.category || 'Knowledge Base'}</span>
+          <h3 class="kb-title">${article.title}</h3>
+        </div>
+        <p class="kb-summary">${article.summary}</p>
+        <p class="kb-content">${article.content}</p>
+        ${contactsHtml}
+        ${article.lastUpdated ? `<p class="kb-updated">Last updated: ${article.lastUpdated}</p>` : ''}
+      `;
+
+      // Insert before the table
+      resultsContainer.insertBefore(kbCard, resultsContainer.firstChild);
+    });
+  }
+
+  // Display location results in table if any
+  if (hasLocationResults) {
+    locationResults.forEach((location) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+              <td data-label="Site">${location['Site'] || '-'}</td>
+              <td data-label="Location">${location['Building'] || '-'}</td>
+              <td data-label="Department">${location['Department'] || '-'}</td>
+              <td data-label="Description">${location['Description'] || '-'}</td>
+              <td data-label="Room">${location['Room Num'] || '-'}</td>
+              <td data-label="Floor">${location['Floor'] || '-'}</td>
+          `;
+      resultsBody.appendChild(row);
+    });
+  }
 }
 
 // Set up search input and filter event listeners
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('locationSearch');
   const clearButton = document.getElementById('clearSearch');
-  const siteFilter = document.getElementById('siteFilter');
-  const buildingFilter = document.getElementById('buildingFilter');
-  const resetFiltersBtn = document.getElementById('resetFilters');
 
   let debounceTimer;
 
@@ -277,28 +323,22 @@ document.addEventListener('DOMContentLoaded', () => {
         window.rainAnimation.start();
       }
 
-      const results = await searchLocations(searchTerm);
-      displayResults(results);
+      // Search both locations and knowledge base
+      const locationResults = await searchLocations(searchTerm);
+      const knowledgeResults = await searchKnowledgeBase(searchTerm);
+      displayResults(locationResults, knowledgeResults);
     }, 300); // Debounce for 300ms to prevent too many searches
   });
 
-  // Filter change event handlers
-  siteFilter.addEventListener('change', () => {
-    activeFilters.site = siteFilter.value;
-    applyFilters();
+  // Site filter radio button change handler (delegated event listener)
+  document.addEventListener('change', (e) => {
+    if (e.target.name === 'siteFilter') {
+      activeFilters.site = e.target.value;
+      applyFilters();
+    }
   });
-
-  buildingFilter.addEventListener('change', () => {
-    activeFilters.location = buildingFilter.value;
-    applyFilters();
-  });
-
-  // Reset filters button event handler
-  resetFiltersBtn.addEventListener('click', resetFilters);
-
-  // Initialize reset button state
-  updateResetFiltersButtonState();
 
   // Load data on initial page load
   loadLocationData();
+  loadKnowledgeBase();
 });
