@@ -4,21 +4,57 @@
       "id": "snackbox-info",
       "title": "Snackbox Service",
       "category": "Services",
-      "keywords": ["snack", "snackbox", "food", "menu", "catering", "sandwich"],
+      "keywords": [
+        "snack",
+        "snackbox",
+        "food",
+        "menu",
+        "catering",
+        "sandwich"
+      ],
       "summary": "Order snackboxes for meetings and events",
       "content": "Our snackbox service provides convenient catering options for meetings, training sessions, and events. Each snackbox includes a selection of sandwiches, snacks, fruit, and beverages. Choose from vegetarian, vegan, and standard options. Minimum order of 5 boxes required. Please order at least 24 hours in advance.",
-      "contacts": ["Catering Dept: ext 1234", "Email: catering@uhcw.nhs.uk"],
+      "contacts": [
+        "Catering Dept: ext 1234",
+        "Email: catering@uhcw.nhs.uk"
+      ],
       "lastUpdated": "2025-11-26"
     },
     {
       "id": "litebite-info",
       "title": "Lite Bites (All-Day Menu)",
       "category": "Services",
-      "keywords": ["lite", "litebite", "bite", "food", "menu", "catering"],
+      "keywords": [
+        "lite",
+        "litebite",
+        "bite",
+        "food",
+        "menu",
+        "catering",
+        "hot food"
+      ],
       "summary": "Order meals from the All Day Menu for patients, and sometimes for visitors",
       "content": "Lorem ipsum",
-      "contacts": ["Catering Dept: ext 24981", "Email: catering@uhcw.nhs.uk"],
-      "lastUpdated": "2025-11-26"
+      "contacts": [
+        "Catering Dept: ext 24981",
+        "Email: catering@uhcw.nhs.uk"
+      ],
+      "lastUpdated": "2025-11-27"
+    },
+    {
+      "id": "Fogging",
+      "title": "Fogging and pre-fogging",
+      "category": "Domestics",
+      "keywords": [
+        "fog",
+        "pre-fog"
+      ],
+      "summary": "How and what to do in the event of being asked for a fogging",
+      "content": "More lorem ipsum!",
+      "contacts": [
+        "Radio 561 - and pass the job number too"
+      ],
+      "lastUpdated": "2025-11-27"
     }
   ]
 }
