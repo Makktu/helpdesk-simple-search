@@ -1,33 +1,54 @@
+/* ============================================
+   Immersive Glass UI — Helpdesk
+   ============================================ */
+
 :root {
-  --background-color: #fff;
-  --text-color: #000;
-  --button-bg: #f8f9fa;
-  --button-hover: #f1f3f4;
-  --button-text: #3c4043;
-  --input-border: #dfe1e5;
-  --border-color: #ddd;
-  --primary-color: #1e4fb5;
-  --hero-bg: #1e4fb5;
-  --hover-color: #f1f3f4;
-  --tips-bg: #f8f9fa;
-  --results-bg: #f5f7fa;
-  --kb-card-bg: #e8ecf0;
+  /* Core palette */
+  --background-color: #f8fafc;
+  --text-color: #1e293b;
+  --button-bg: #f1f5f9;
+  --button-hover: #e2e8f0;
+  --button-text: #334155;
+  --input-border: #cbd5e1;
+  --border-color: #e2e8f0;
+  --primary-color: #2563eb;
+  --hero-bg: #1e3a8a;
+  --hover-color: #f1f5f9;
+  --tips-bg: #f1f5f9;
+  --results-bg: #f0f4f8;
+  --kb-card-bg: #ffffff;
+
+  /* Glass variables */
+  --glass-bg: rgba(20, 40, 100, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+  /* Accent gradient */
+  --accent-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+
+  /* Font stack */
+  --font-stack:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 [data-theme='dark'] {
-  --background-color: #202124;
-  --text-color: #fff;
-  --button-bg: #303134;
-  --button-hover: #3c4043;
-  --button-text: #e8eaed;
-  --input-border: #5f6368;
-  --border-color: #5f6368;
-  --primary-color: #5b8ff9;
-  --hero-bg: #0f2557;
-  --hover-color: #3c4043;
-  --tips-bg: #303134;
-  --results-bg: #1a1d21;
-  --kb-card-bg: #2d3135;
+  --background-color: #0f172a;
+  --text-color: #e2e8f0;
+  --button-bg: #1e293b;
+  --button-hover: #334155;
+  --button-text: #cbd5e1;
+  --input-border: #475569;
+  --border-color: #334155;
+  --primary-color: #60a5fa;
+  --hero-bg: #0c1a3d;
+  --hover-color: #1e293b;
+  --tips-bg: #1e293b;
+  --results-bg: #0b1120;
+  --kb-card-bg: #1e293b;
+
+  --glass-bg: rgba(10, 20, 60, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
 * {
@@ -37,40 +58,55 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-stack);
   min-height: 100vh;
   background-color: var(--results-bg);
   color: var(--text-color);
-  transition: all 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   margin: 0;
   padding: 0;
 }
 
-/* Hero Section */
+/* ============================================
+   Hero Section — Full viewport
+   ============================================ */
 .hero-section {
-  background: linear-gradient(135deg, var(--hero-bg) 0%, #2563d4 100%);
-  padding: 80px 20px 120px;
+  background: linear-gradient(135deg, var(--hero-bg) 0%, #1d4ed8 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
+  transition:
+    min-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Animated background image using pseudo-element for better performance */
+/* Compact hero when results are showing */
+.hero-section.hero-compact {
+  min-height: 0;
+  padding: 60px 20px 40px;
+}
+
+/* Static background image */
 .hero-section::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 320%;
+  height: 100%;
   background-image: url('img/uhcw_image.png');
-  background-size: 100% auto;
-  background-position: center top;
-  background-repeat: repeat-y;
+  background-size: cover;
+  background-position: center 55%;
+  background-repeat: no-repeat;
   z-index: 0;
-  animation: heroSlide 70s ease-in-out infinite;
 }
 
-/* Gradient overlay on top of animated image */
+/* Gradient overlay on top of background image */
 .hero-section::after {
   content: '';
   position: absolute;
@@ -80,8 +116,8 @@ body {
   height: 100%;
   background: linear-gradient(
     135deg,
-    rgba(30, 79, 181, 0.65) 0%,
-    rgba(37, 99, 212, 0.7) 100%
+    rgba(30, 58, 138, 0.6) 0%,
+    rgba(29, 78, 216, 0.65) 100%
   );
   z-index: 1;
 }
@@ -89,80 +125,132 @@ body {
 [data-theme='dark'] .hero-section::after {
   background: linear-gradient(
     135deg,
-    rgba(15, 37, 87, 0.7) 0%,
-    rgba(37, 99, 212, 0.75) 100%
+    rgba(12, 26, 61, 0.7) 0%,
+    rgba(29, 78, 216, 0.7) 100%
   );
 }
 
-/* Animation keyframes */
-@keyframes heroSlide {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-69%);
-  }
-}
-
-/* Disable animation on mobile devices for performance */
+/* Mobile background positioning */
 @media screen and (max-width: 768px) {
   .hero-section::before {
-    animation: none;
-    height: 100%;
+    background-position: center center;
   }
 }
 
-/* Respect user's motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .hero-section::before {
-    animation: none;
-    height: 100%;
-  }
-}
-
+/* ============================================
+   Glass-morphism Panel
+   ============================================ */
 .hero-content {
-  max-width: 900px;
+  max-width: 720px;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
   position: relative;
   z-index: 2;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 48px 40px 40px;
+  box-shadow: var(--glass-shadow);
+  animation: panelEntrance 0.6s ease-out both;
+}
+
+/* Fallback when backdrop-filter is unsupported */
+@supports not (backdrop-filter: blur(20px)) {
+  .hero-content {
+    background: rgba(20, 40, 100, 0.8);
+  }
+  [data-theme='dark'] .hero-content {
+    background: rgba(10, 20, 60, 0.85);
+  }
+}
+
+/* ============================================
+   Entrance Animations
+   ============================================ */
+@keyframes panelEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-title {
-  font-size: 58px;
-  font-weight: 600;
+  font-size: 54px;
+  font-weight: 700;
   color: #ffffff;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   letter-spacing: -0.5px;
+  animation: fadeSlideUp 0.5s ease-out 0.15s both;
 }
 
 .hero-subtitle {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 40px;
-  line-height: 1.5;
-  max-width: 700px;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 36px;
+  line-height: 1.6;
+  max-width: 560px;
   margin-left: auto;
   margin-right: auto;
+  animation: fadeSlideUp 0.5s ease-out 0.25s both;
 }
 
-/* Search Box in Hero */
 .search-box {
   position: relative;
   width: 100%;
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
+  animation: fadeSlideUp 0.5s ease-out 0.35s both;
 }
 
+.site-filter-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+  animation: fadeSlideUp 0.5s ease-out 0.45s both;
+}
+
+/* Disable all entrance animations for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-title,
+  .hero-subtitle,
+  .search-box,
+  .site-filter-radios {
+    animation: none;
+  }
+}
+
+/* ============================================
+   Enhanced Search Input
+   ============================================ */
 .search-icon {
   position: absolute;
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  fill: #999;
+  width: 22px;
+  height: 22px;
+  fill: #94a3b8;
   pointer-events: none;
 }
 
@@ -170,21 +258,47 @@ body {
   width: 100%;
   padding: 18px 55px 18px 55px;
   font-size: 16px;
-  border: none;
-  border-radius: 8px;
+  font-family: var(--font-stack);
+  border: 2px solid transparent;
+  border-radius: 16px;
   outline: none;
   background: #ffffff;
-  color: #333;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: box-shadow 0.2s ease;
+  color: #1e293b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.15s ease;
 }
 
 .search-input:focus {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 4px rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: scale(1.01);
 }
 
 .search-input::placeholder {
-  color: #999;
+  color: #94a3b8;
+}
+
+/* Dark mode search input */
+[data-theme='dark'] .search-input {
+  background: #1e293b;
+  color: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='dark'] .search-input:focus {
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 0 0 4px rgba(96, 165, 250, 0.15);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+[data-theme='dark'] .search-input::placeholder {
+  color: #64748b;
 }
 
 .clear-button {
@@ -207,6 +321,10 @@ body {
   background-color: #f0f0f0;
 }
 
+[data-theme='dark'] .clear-button:hover {
+  background-color: #334155;
+}
+
 .clear-button svg {
   width: 20px;
   height: 20px;
@@ -218,30 +336,28 @@ body {
   opacity: 1;
 }
 
-/* Site Filter Radio Buttons */
-.site-filter-radios {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 24px;
+[data-theme='dark'] .clear-button svg {
+  fill: #94a3b8;
 }
 
+/* ============================================
+   Glass Radio Filter Pills
+   ============================================ */
 .radio-option {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   user-select: none;
 }
 
 .radio-option:hover {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
 }
 
@@ -249,35 +365,25 @@ body {
   margin: 0;
   margin-right: 8px;
   cursor: pointer;
-  width: 16px;
-  height: 16px;
-  accent-color: var(--primary-color);
+  width: 14px;
+  height: 14px;
+  accent-color: #ffffff;
 }
 
 .radio-option span {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: #333;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .radio-option input[type='radio']:checked + span {
   font-weight: 600;
-  color: var(--primary-color);
+  color: #ffffff;
 }
 
-/* Results Section */
-.results-section {
-  background-color: var(--results-bg);
-  min-height: 60vh;
-  padding: 40px 20px;
-}
-
-.results-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Theme Toggle */
+/* ============================================
+   Theme Toggle — Refined
+   ============================================ */
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
@@ -285,18 +391,22 @@ body {
   top: 20px;
   right: 20px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
   padding: 8px;
+  transition: background 0.3s ease;
 }
 
 [data-theme='dark'] .theme-switch-wrapper {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .theme-icon {
-  font-size: 28px;
+  font-size: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -305,17 +415,56 @@ body {
 }
 
 .theme-icon:hover {
-  transform: scale(1.1);
+  transform: rotate(20deg) scale(1.1);
 }
 
-/* Tips Box */
+/* ============================================
+   Results Section
+   ============================================ */
+.results-section {
+  background-color: var(--results-bg);
+  min-height: 50vh;
+  padding: 48px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.results-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Results entrance animation */
+@keyframes resultsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-results.results-visible {
+  animation: resultsFadeIn 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-results.results-visible {
+    animation: none;
+  }
+}
+
+/* ============================================
+   Tips Box
+   ============================================ */
 .tips-box {
   margin: 30px auto 40px;
   background-color: var(--background-color);
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 24px;
   max-width: 800px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
 }
 
@@ -349,7 +498,9 @@ body {
   margin-top: 15px;
 }
 
-/* Search Results */
+/* ============================================
+   Search Results Table
+   ============================================ */
 .search-results {
   margin-top: 30px;
   width: 100%;
@@ -357,10 +508,11 @@ body {
 
 .search-results table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   background: var(--background-color);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
   overflow: hidden;
 }
 
@@ -372,10 +524,10 @@ body {
 }
 
 .search-results th {
-  background-color: var(--primary-color);
+  background: var(--accent-gradient);
   color: white;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -397,23 +549,27 @@ body {
   padding: 40px 20px;
   color: var(--text-color);
   background: var(--background-color);
-  border-radius: 8px;
+  border-radius: 16px;
   margin-top: 20px;
 }
 
-/* Knowledge Base Card Styles */
+/* ============================================
+   Knowledge Base Cards
+   ============================================ */
 .knowledge-base-card {
   background: var(--kb-card-bg);
-  border-radius: 8px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 28px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border-left: 4px solid var(--primary-color);
-  transition: all 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
 .knowledge-base-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
 
@@ -423,12 +579,12 @@ body {
 
 .kb-badge {
   display: inline-block;
-  background-color: var(--primary-color);
+  background: var(--accent-gradient);
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   padding: 4px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 12px;
@@ -461,7 +617,7 @@ body {
   margin: 16px 0;
   padding: 12px;
   background-color: var(--tips-bg);
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .kb-contacts strong {
@@ -485,7 +641,7 @@ body {
 }
 
 .kb-contacts li:before {
-  content: '📞 ';
+  content: '\1F4DE ';
   margin-right: 8px;
 }
 
@@ -497,34 +653,49 @@ body {
   font-style: italic;
 }
 
-/* Mobile Responsive Styles */
+/* ============================================
+   Mobile Responsive Styles
+   ============================================ */
 @media screen and (max-width: 768px) {
   .hero-section {
-    padding: 60px 15px 80px;
+    min-height: 100svh;
+    padding: 0 15px;
   }
 
-  .hero-section::before {
-    background-size: auto 100%;
-    background-position: center center;
+  .hero-section.hero-compact {
+    min-height: 0;
+    padding: 40px 15px 30px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    border-radius: 16px;
+    padding: 32px 20px 28px;
+    /* Disable entrance animations on mobile */
+    animation: none;
   }
 
   .hero-title {
     font-size: 32px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    animation: none;
   }
 
   .hero-subtitle {
-    font-size: 16px;
-    margin-bottom: 30px;
+    font-size: 15px;
+    margin-bottom: 28px;
+    animation: none;
   }
 
   .search-box {
     max-width: 100%;
+    animation: none;
   }
 
   .search-input {
     padding: 16px 50px 16px 50px;
     font-size: 15px;
+    border-radius: 12px;
   }
 
   .search-icon {
@@ -541,15 +712,15 @@ body {
   .site-filter-radios {
     margin-top: 20px;
     gap: 8px;
+    animation: none;
   }
 
   .radio-option {
-    padding: 8px 14px;
-    font-size: 13px;
+    padding: 6px 12px;
   }
 
   .radio-option span {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   /* Mobile table styles */
@@ -564,7 +735,7 @@ body {
   }
 
   .search-results thead {
-    display: none; /* Hide headers on mobile */
+    display: none;
   }
 
   .search-results tbody tr {
@@ -578,18 +749,9 @@ body {
       color-mix(in srgb, var(--background-color) 97%, var(--primary-color))
     );
     padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid var(--border-color);
-  }
-
-  /* Add a subtle gradient background to cards */
-  .search-results tbody tr {
-    background: linear-gradient(
-      to bottom right,
-      var(--background-color),
-      color-mix(in srgb, var(--background-color) 97%, var(--primary-color))
-    );
   }
 
   .search-results td {
@@ -597,7 +759,7 @@ body {
     padding: 4px 8px;
     border: none;
     position: relative;
-    padding-left: 95px; /* Increased from 85px */
+    padding-left: 95px;
     font-size: 0.9em;
     line-height: 1.4;
   }
@@ -622,7 +784,6 @@ body {
     display: none;
   }
 
-  /* Add a subtle hover effect */
   .search-results tbody tr:active {
     transform: scale(0.995);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -634,6 +795,7 @@ body {
     margin-bottom: 16px;
     margin-left: 10px;
     margin-right: 10px;
+    border-radius: 12px;
   }
 
   .kb-title {
@@ -646,6 +808,11 @@ body {
 
   .kb-content {
     font-size: 13px;
+  }
+
+  /* Disable results animation on mobile */
+  .search-results.results-visible {
+    animation: none;
   }
 }
 
@@ -677,7 +844,7 @@ body {
   }
 
   .theme-icon {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .tips-box {
