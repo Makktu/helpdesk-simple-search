@@ -39,7 +39,6 @@ The application uses a JSON file (`knowledge-base.json`) containing helpdesk kno
   - JSON knowledge base loading and parsing
   - Unified search across both data sources (triggered by button click or Enter key)
   - Site filter radio button management
-  - High Contrast theme toggle persisted in localStorage
   - Win95 window controls (minimize, maximize, close, taskbar restore)
   - Start menu and Programs submenu interaction
   - Desktop icon double-click handlers
@@ -50,7 +49,6 @@ The application uses a JSON file (`knowledge-base.json`) containing helpdesk kno
 - **knowledge-base.json**: Knowledge base articles in JSON format
 - **styles.css**: Windows 95 style design including:
   - CSS custom properties for the full Win95 color palette (`--win95-teal`, `--win95-gray`, `--win95-blue`, etc.)
-  - High Contrast dark theme via `[data-theme="dark"]` overrides
   - Desktop wallpaper (`#008080` teal) with hospital image at 0.15 opacity as subtle background
   - Desktop icons (My Computer, Network Neighborhood, Recycle Bin, Helpdesk95.exe) using emoji inside CSS-drawn icon frames
   - Win95 window chrome: raised/sunken borders using 4-value `border-color` shorthand (`highlight / dark-shadow / dark-shadow / highlight` = raised; reversed = sunken)
@@ -71,7 +69,7 @@ The application uses a JSON file (`knowledge-base.json`) containing helpdesk kno
    - Hospital image used as faint (0.15 opacity) desktop wallpaper background
    - Desktop icons: double-click "Helpdesk95.exe" to restore window; "My Computer" opens About dialog; others show alert messages
    - Start button with Windows logo icon; Programs submenu appears on hover
-   - Live clock in system tray updating every second
+   - Live clock in system tray updating every second (only tray item)
 2. **Win95 Application Window**: Authentic chrome with gradient title bar, menu bar, status bar
    - Minimize hides the window (restore via taskbar item); Maximize toggles `.maximized` class for full-screen
    - Close hides the window (same as minimize — no data is destroyed)
@@ -86,10 +84,7 @@ The application uses a JSON file (`knowledge-base.json`) containing helpdesk kno
    - Populated dynamically from unique site values in the CSV
 5. **Knowledge Base Cards**: Win95 panel-style cards with gray header bar and document icon
    - Summary, content, contacts box (gray inset panel with phone emoji bullets), last updated
-6. **High Contrast Theme**: "HC" button in system tray toggles `[data-theme="dark"]` on `<html>`
-   - Dark theme inverts to black background, white text, high-contrast borders
-   - Persisted in localStorage with key `'theme'`
-7. **Mobile Responsive**: Window repositioned to top-5% on narrow screens; desktop icons hidden; search controls stack vertically
+6. **Mobile Responsive**: Window repositioned to top-5% on narrow screens; desktop icons hidden; search controls stack vertically
 8. **Easter Egg**: Rain animation triggered by searching "make it rain"
 
 ## Data Structure
@@ -128,7 +123,6 @@ The application has one primary mobile breakpoint:
 - Teal desktop (`#008080`) is the iconic Win95 default wallpaper color
 - Hospital image is present but kept very faint (0.15 opacity) so it doesn't compete with the Win95 UI chrome
 - No CSS animations anywhere (except rain easter egg canvas); Win95 had no animated UI transitions
-- High Contrast dark mode (`[data-theme="dark"]`) mirrors the Win95 Accessibility > High Contrast Black scheme
 - Results count phrased as "X object(s)" matching Win95 Explorer status bar language
 
 ## Known Issues
@@ -138,7 +132,6 @@ Some CSV data is malformed but results remain accurate. For example, searching "
 ## Important Considerations
 
 - **No Package Manager**: This project intentionally has no package.json, npm, or build tools
-- **Theme Persistence**: Theme preference stored in localStorage with key `'theme'`
 - **Data Parsing**:
   - CSV: Custom CSV parser in script.js handles quoted values and trims whitespace
   - JSON: Knowledge base loaded via fetch API

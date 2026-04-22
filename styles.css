@@ -30,25 +30,6 @@
   --win95-workspace: #ffffff;
 }
 
-/* High Contrast Theme (Dark) */
-[data-theme="dark"] {
-  --win95-teal: #004040;
-  --win95-desktop: #000000;
-  --win95-gray: #404040;
-  --win95-light-gray: #606060;
-  --win95-dark-gray: #202020;
-  --win95-white: #000000;
-  --win95-black: #ffffff;
-  --win95-btn-face: #404040;
-  --win95-btn-shadow: #000000;
-  --win95-btn-highlight: #606060;
-  --win95-btn-dark-shadow: #ffffff;
-  --win95-window-bg: #404040;
-  --win95-text: #ffffff;
-  --win95-selected-bg: #ffffff;
-  --win95-selected-text: #000000;
-  --win95-workspace: #000000;
-}
 
 * {
   margin: 0;
@@ -836,19 +817,6 @@ html, body {
   gap: 4px;
 }
 
-.tray-icon {
-  width: 20px;
-  height: 20px;
-  background: var(--win95-btn-face);
-  border: 1px solid;
-  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 9px;
-  font-weight: bold;
-}
 
 .clock {
   border: 1px solid;

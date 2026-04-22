@@ -23,36 +23,6 @@ let isStartMenuOpen = false;
 let isMaximized = false;
 
 // ============================================
-// Theme Toggle (High Contrast)
-// ============================================
-const themeToggle = document.getElementById('themeToggle');
-
-function switchTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  if (currentTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'light');
-    localStorage.setItem('theme', 'light');
-    themeToggle.style.background = 'var(--win95-btn-face)';
-    themeToggle.style.color = 'var(--win95-black)';
-  } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
-    themeToggle.style.background = 'var(--win95-selected-bg)';
-    themeToggle.style.color = 'var(--win95-selected-text)';
-  }
-}
-
-themeToggle.addEventListener('click', switchTheme);
-
-// Check for saved theme preference
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'dark') {
-  document.documentElement.setAttribute('data-theme', 'dark');
-  themeToggle.style.background = 'var(--win95-selected-bg)';
-  themeToggle.style.color = 'var(--win95-selected-text)';
-}
-
-// ============================================
 // Clock
 // ============================================
 function updateClock() {
