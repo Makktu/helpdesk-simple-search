@@ -1,54 +1,53 @@
 /* ============================================
-   Immersive Glass UI — Helpdesk
+   Windows 95 Style - Helpdesk Interface
    ============================================ */
 
+/* Windows 95 Color Palette */
 :root {
-  /* Core palette */
-  --background-color: #f8fafc;
-  --text-color: #1e293b;
-  --button-bg: #f1f5f9;
-  --button-hover: #e2e8f0;
-  --button-text: #334155;
-  --input-border: #cbd5e1;
-  --border-color: #e2e8f0;
-  --primary-color: #2563eb;
-  --hero-bg: #1e3a8a;
-  --hover-color: #f1f5f9;
-  --tips-bg: #f1f5f9;
-  --results-bg: #f0f4f8;
-  --kb-card-bg: #ffffff;
-
-  /* Glass variables */
-  --glass-bg: rgba(20, 40, 100, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.18);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-
-  /* Accent gradient */
-  --accent-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-
-  /* Font stack */
-  --font-stack:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --win95-teal: #008080;
+  --win95-gray: #c0c0c0;
+  --win95-dark-gray: #808080;
+  --win95-light-gray: #dfdfdf;
+  --win95-white: #ffffff;
+  --win95-black: #000000;
+  --win95-blue: #000080;
+  --win95-navy: #000080;
+  --win95-active-title: #000080;
+  --win95-inactive-title: #808080;
+  --win95-desktop: #008080;
+  --win95-btn-face: #c0c0c0;
+  --win95-btn-shadow: #808080;
+  --win95-btn-highlight: #ffffff;
+  --win95-btn-dark-shadow: #000000;
+  --win95-window-bg: #c0c0c0;
+  --win95-window-frame: #c0c0c0;
+  --win95-text: #000000;
+  --win95-selected-bg: #000080;
+  --win95-selected-text: #ffffff;
+  --win95-menu-bar: #c0c0c0;
+  --win95-menu-text: #000000;
+  --win95-status-bar: #c0c0c0;
+  --win95-workspace: #ffffff;
 }
 
-[data-theme='dark'] {
-  --background-color: #0f172a;
-  --text-color: #e2e8f0;
-  --button-bg: #1e293b;
-  --button-hover: #334155;
-  --button-text: #cbd5e1;
-  --input-border: #475569;
-  --border-color: #334155;
-  --primary-color: #60a5fa;
-  --hero-bg: #0c1a3d;
-  --hover-color: #1e293b;
-  --tips-bg: #1e293b;
-  --results-bg: #0b1120;
-  --kb-card-bg: #1e293b;
-
-  --glass-bg: rgba(10, 20, 60, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+/* High Contrast Theme (Dark) */
+[data-theme="dark"] {
+  --win95-teal: #004040;
+  --win95-desktop: #000000;
+  --win95-gray: #404040;
+  --win95-light-gray: #606060;
+  --win95-dark-gray: #202020;
+  --win95-white: #000000;
+  --win95-black: #ffffff;
+  --win95-btn-face: #404040;
+  --win95-btn-shadow: #000000;
+  --win95-btn-highlight: #606060;
+  --win95-btn-dark-shadow: #ffffff;
+  --win95-window-bg: #404040;
+  --win95-text: #ffffff;
+  --win95-selected-bg: #ffffff;
+  --win95-selected-text: #000000;
+  --win95-workspace: #000000;
 }
 
 * {
@@ -57,42 +56,29 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: var(--font-stack);
-  min-height: 100vh;
-  background-color: var(--results-bg);
-  color: var(--text-color);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-  margin: 0;
-  padding: 0;
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", "Segoe UI", Tahoma, sans-serif;
+  font-size: 11px;
+  background-color: var(--win95-desktop);
+  color: var(--win95-text);
 }
 
 /* ============================================
-   Hero Section — Full viewport
+   Desktop Wallpaper
    ============================================ */
-.hero-section {
-  background: linear-gradient(135deg, var(--hero-bg) 0%, #1d4ed8 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  transition:
-    min-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+.desktop-wallpaper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--win95-teal);
+  z-index: 0;
 }
 
-/* Compact hero when results are showing */
-.hero-section.hero-compact {
-  min-height: 0;
-  padding: 60px 20px 40px;
-}
-
-/* Static background image */
-.hero-section::before {
+.desktop-wallpaper::before {
   content: '';
   position: absolute;
   top: 0;
@@ -101,768 +87,1020 @@ body {
   height: 100%;
   background-image: url('img/uhcw_image.png');
   background-size: cover;
-  background-position: center 55%;
+  background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
+  opacity: 0.15;
 }
 
-/* Gradient overlay on top of background image */
-.hero-section::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    135deg,
-    rgba(30, 58, 138, 0.6) 0%,
-    rgba(29, 78, 216, 0.65) 100%
-  );
+/* ============================================
+   Desktop Icons
+   ============================================ */
+.desktop-icons {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   z-index: 1;
 }
 
-[data-theme='dark'] .hero-section::after {
-  background: linear-gradient(
-    135deg,
-    rgba(12, 26, 61, 0.7) 0%,
-    rgba(29, 78, 216, 0.7) 100%
-  );
-}
-
-/* Mobile background positioning */
-@media screen and (max-width: 768px) {
-  .hero-section::before {
-    background-position: center center;
-  }
-}
-
-/* ============================================
-   Glass-morphism Panel
-   ============================================ */
-.hero-content {
-  max-width: 720px;
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 48px 40px 40px;
-  box-shadow: var(--glass-shadow);
-  animation: panelEntrance 0.6s ease-out both;
-}
-
-/* Fallback when backdrop-filter is unsupported */
-@supports not (backdrop-filter: blur(20px)) {
-  .hero-content {
-    background: rgba(20, 40, 100, 0.8);
-  }
-  [data-theme='dark'] .hero-content {
-    background: rgba(10, 20, 60, 0.85);
-  }
-}
-
-/* ============================================
-   Entrance Animations
-   ============================================ */
-@keyframes panelEntrance {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.hero-title {
-  font-size: 54px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-  animation: fadeSlideUp 0.5s ease-out 0.15s both;
-}
-
-.hero-subtitle {
-  font-size: 17px;
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 36px;
-  line-height: 1.6;
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
-  animation: fadeSlideUp 0.5s ease-out 0.25s both;
-}
-
-.search-box {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  animation: fadeSlideUp 0.5s ease-out 0.35s both;
-}
-
-.site-filter-radios {
+.desktop-icon {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 24px;
-  animation: fadeSlideUp 0.5s ease-out 0.45s both;
-}
-
-/* Disable all entrance animations for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hero-content,
-  .hero-title,
-  .hero-subtitle,
-  .search-box,
-  .site-filter-radios {
-    animation: none;
-  }
-}
-
-/* ============================================
-   Enhanced Search Input
-   ============================================ */
-.search-icon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
-  fill: #94a3b8;
-  pointer-events: none;
-}
-
-.search-input {
-  width: 100%;
-  padding: 18px 55px 18px 55px;
-  font-size: 16px;
-  font-family: var(--font-stack);
-  border: 2px solid transparent;
-  border-radius: 16px;
-  outline: none;
-  background: #ffffff;
-  color: #1e293b;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition:
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.15s ease;
-}
-
-.search-input:focus {
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.1),
-    0 0 0 4px rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.3);
-  transform: scale(1.01);
-}
-
-.search-input::placeholder {
-  color: #94a3b8;
-}
-
-/* Dark mode search input */
-[data-theme='dark'] .search-input {
-  background: #1e293b;
-  color: #e2e8f0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-}
-
-[data-theme='dark'] .search-input:focus {
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.25),
-    0 0 0 4px rgba(96, 165, 250, 0.15);
-  border-color: rgba(96, 165, 250, 0.3);
-}
-
-[data-theme='dark'] .search-input::placeholder {
-  color: #64748b;
-}
-
-.clear-button {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  border-radius: 50%;
-  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
-
-.clear-button:hover {
-  background-color: #f0f0f0;
-}
-
-[data-theme='dark'] .clear-button:hover {
-  background-color: #334155;
-}
-
-.clear-button svg {
-  width: 20px;
-  height: 20px;
-  fill: #666;
-  opacity: 0.7;
-}
-
-.clear-button:hover svg {
-  opacity: 1;
-}
-
-[data-theme='dark'] .clear-button svg {
-  fill: #94a3b8;
-}
-
-/* ============================================
-   Glass Radio Filter Pills
-   ============================================ */
-.radio-option {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
+  width: 75px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   user-select: none;
 }
 
-.radio-option:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
+.desktop-icon:hover .icon-image {
+  filter: brightness(1.1);
 }
 
-.radio-option input[type='radio'] {
-  margin: 0;
-  margin-right: 8px;
-  cursor: pointer;
-  width: 14px;
-  height: 14px;
-  accent-color: #ffffff;
+.desktop-icon:hover span {
+  background-color: var(--win95-selected-bg);
+  color: var(--win95-selected-text);
 }
 
-.radio-option span {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+.desktop-icon span {
+  margin-top: 4px;
+  padding: 1px 3px;
+  text-align: center;
+  color: var(--win95-white);
+  text-shadow: 1px 1px 0 var(--win95-black);
+  font-size: 11px;
+  line-height: 1.2;
 }
 
-.radio-option input[type='radio']:checked + span {
-  font-weight: 600;
-  color: #ffffff;
+.icon-image {
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Icon styles using CSS patterns */
+.icon-image.my-computer {
+  background: linear-gradient(135deg, #808080 25%, #c0c0c0 25%, #c0c0c0 50%, #808080 50%, #808080 75%, #c0c0c0 75%);
+  background-size: 8px 8px;
+  border: 2px solid var(--win95-white);
+  box-shadow: inset 1px 1px 0 var(--win95-dark-gray);
+  position: relative;
+}
+
+.icon-image.my-computer::before {
+  content: '🖥️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+}
+
+.icon-image.network {
+  background: var(--win95-gray);
+  border: 2px solid var(--win95-white);
+  position: relative;
+}
+
+.icon-image.network::before {
+  content: '🌐';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+}
+
+.icon-image.recycle-bin {
+  background: var(--win95-gray);
+  border: 2px solid var(--win95-white);
+  position: relative;
+}
+
+.icon-image.recycle-bin::before {
+  content: '🗑️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+}
+
+.icon-image.help {
+  background: var(--win95-gray);
+  border: 2px solid var(--win95-white);
+  position: relative;
+}
+
+.icon-image.help::before {
+  content: '📂';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
 }
 
 /* ============================================
-   Theme Toggle — Refined
+   Main Window
    ============================================ */
-.theme-switch-wrapper {
+.win95-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 700px;
+  max-width: 95vw;
+  max-height: 80vh;
+  background-color: var(--win95-window-bg);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  box-shadow: 2px 2px 0 var(--win95-black);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.win95-window.maximized {
+  top: 0;
+  left: 0;
+  transform: none;
+  width: calc(100% - 4px);
+  height: calc(100% - 30px);
+  max-width: none;
+  max-height: none;
+}
+
+/* ============================================
+   Title Bar
+   ============================================ */
+.title-bar {
+  background: linear-gradient(90deg, var(--win95-active-title) 0%, #1084d0 100%);
+  color: var(--win95-white);
+  padding: 2px 3px;
   display: flex;
   align-items: center;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 14px;
-  padding: 8px;
-  transition: background 0.3s ease;
+  gap: 4px;
+  cursor: default;
 }
 
-[data-theme='dark'] .theme-switch-wrapper {
-  background: rgba(0, 0, 0, 0.25);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.theme-icon {
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.title-bar-icon {
+  width: 16px;
+  height: 16px;
+  background: var(--win95-gray);
+  border: 1px solid var(--win95-btn-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.theme-icon:hover {
-  transform: rotate(20deg) scale(1.1);
+.title-bar-icon::before {
+  content: '📂';
+  font-size: 10px;
+}
+
+.title-bar-text {
+  flex: 1;
+  font-weight: bold;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.title-bar-buttons {
+  display: flex;
+  gap: 2px;
+}
+
+.title-btn {
+  width: 16px;
+  height: 14px;
+  background: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  color: var(--win95-black);
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "MS Sans Serif", sans-serif;
+  padding: 0;
+}
+
+.title-btn:active {
+  border-color: var(--win95-btn-dark-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-dark-shadow);
+}
+
+.title-btn.close {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* ============================================
+   Menu Bar
+   ============================================ */
+.menu-bar {
+  background-color: var(--win95-menu-bar);
+  border-bottom: 1px solid var(--win95-btn-shadow);
+  padding: 1px 4px;
+  display: flex;
+  gap: 12px;
+}
+
+.menu-item {
+  padding: 2px 6px;
+  cursor: pointer;
+  position: relative;
+}
+
+.menu-item:hover {
+  background-color: var(--win95-selected-bg);
+  color: var(--win95-selected-text);
+}
+
+.menu-item::first-letter {
+  text-decoration: underline;
+}
+
+/* ============================================
+   Window Content
+   ============================================ */
+.window-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--win95-workspace);
+  border: 2px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  margin: 2px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Scrollbar styles */
+.window-content::-webkit-scrollbar {
+  width: 16px;
+}
+
+.window-content::-webkit-scrollbar-track {
+  background: var(--win95-gray);
+  border-left: 1px solid var(--win95-btn-shadow);
+}
+
+.window-content::-webkit-scrollbar-thumb {
+  background: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+}
+
+.window-content::-webkit-scrollbar-button {
+  background: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  height: 16px;
+}
+
+/* ============================================
+   Panels
+   ============================================ */
+.panel {
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  background-color: var(--win95-workspace);
+}
+
+.panel-header {
+  background: linear-gradient(90deg, var(--win95-blue) 0%, #1084d0 100%);
+  color: var(--win95-white);
+  padding: 2px 6px;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.panel-content {
+  padding: 8px;
+}
+
+/* ============================================
+   Form Controls
+   ============================================ */
+.win95-input {
+  background-color: var(--win95-white);
+  border: 2px solid;
+  border-color: var(--win95-btn-dark-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-dark-shadow);
+  padding: 3px 5px;
+  font-family: "MS Sans Serif", sans-serif;
+  font-size: 11px;
+  color: var(--win95-black);
+  outline: none;
+}
+
+.win95-input:focus {
+  outline: 1px dotted var(--win95-black);
+  outline-offset: -3px;
+}
+
+.win95-btn {
+  background-color: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  padding: 4px 12px;
+  font-family: "MS Sans Serif", sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  min-width: 75px;
+}
+
+.win95-btn:active {
+  border-color: var(--win95-btn-dark-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-dark-shadow);
+  padding: 5px 11px 3px 13px;
+}
+
+.win95-btn:focus {
+  outline: 1px dotted var(--win95-black);
+  outline-offset: -4px;
+}
+
+.win95-fieldset {
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  padding: 8px;
+  margin: 0;
+}
+
+.win95-fieldset legend {
+  padding: 0 4px;
+  color: var(--win95-text);
+}
+
+.win95-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.win95-radio input[type="radio"] {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--win95-white);
+  border: 1px solid var(--win95-btn-dark-shadow);
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+}
+
+.win95-radio input[type="radio"]:checked::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: var(--win95-black);
+  border-radius: 50%;
+}
+
+/* ============================================
+   Search Section
+   ============================================ */
+.search-container {
+  margin-bottom: 12px;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+
+.search-box-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.search-box-wrapper .win95-input {
+  flex: 1;
+}
+
+.search-btn {
+  font-weight: bold;
+}
+
+.filter-section {
+  margin-top: 8px;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 /* ============================================
    Results Section
    ============================================ */
-.results-section {
-  background-color: var(--results-bg);
-  min-height: 50vh;
-  padding: 48px 20px;
-  transition: background-color 0.3s ease;
+.results-panel {
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  background-color: var(--win95-workspace);
 }
 
-.results-container {
-  max-width: 1200px;
-  margin: 0 auto;
+.results-content {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-/* Results entrance animation */
-@keyframes resultsFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Results Table */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
 }
 
-.search-results.results-visible {
-  animation: resultsFadeIn 0.35s ease-out both;
+.results-table th,
+.results-table td {
+  padding: 4px 6px;
+  text-align: left;
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .search-results.results-visible {
-    animation: none;
-  }
+.results-table th {
+  background-color: var(--win95-btn-face);
+  font-weight: bold;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
 }
 
-/* ============================================
-   Tips Box
-   ============================================ */
-.tips-box {
-  margin: 30px auto 40px;
-  background-color: var(--background-color);
-  border-radius: 16px;
-  padding: 24px;
-  max-width: 800px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+.results-table tbody tr:hover {
+  background-color: var(--win95-selected-bg);
+  color: var(--win95-selected-text);
 }
 
-.tips-header {
+/* Knowledge Base Card in Win95 Style */
+.kb-result {
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  margin-bottom: 8px;
+  background-color: var(--win95-workspace);
+}
+
+.kb-result-header {
+  background-color: var(--win95-btn-face);
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--win95-btn-shadow);
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  gap: 8px;
 }
 
-.tips-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-  fill: var(--text-color);
+.kb-result-icon {
+  width: 16px;
+  height: 16px;
+  background: var(--win95-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--win95-btn-shadow);
 }
 
-.tips-header h2 {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text-color);
+.kb-result-icon::before {
+  content: '📄';
+  font-size: 10px;
 }
 
-.tips-box p {
-  color: var(--text-color);
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0;
+.kb-result-title {
+  font-weight: bold;
+  color: var(--win95-text);
 }
 
-.tips-box p + p {
-  margin-top: 15px;
+.kb-result-content {
+  padding: 8px;
 }
 
-/* ============================================
-   Search Results Table
-   ============================================ */
-.search-results {
-  margin-top: 30px;
-  width: 100%;
+.kb-result-summary {
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
-.search-results table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--background-color);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.search-results th,
-.search-results td {
-  padding: 14px 16px;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.search-results th {
-  background: var(--accent-gradient);
-  color: white;
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.search-results tbody tr {
-  transition: background-color 0.2s ease;
-}
-
-.search-results tbody tr:hover {
-  background-color: var(--hover-color);
-}
-
-.search-results tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.search-results #noResults {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-color);
-  background: var(--background-color);
-  border-radius: 16px;
-  margin-top: 20px;
-}
-
-/* ============================================
-   Knowledge Base Cards
-   ============================================ */
-.knowledge-base-card {
-  background: var(--kb-card-bg);
-  border-radius: 16px;
-  padding: 28px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border-left: 4px solid var(--primary-color);
-  transition:
-    box-shadow 0.3s ease,
-    transform 0.2s ease;
-}
-
-.knowledge-base-card:hover {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.kb-header {
-  margin-bottom: 16px;
-}
-
-.kb-badge {
-  display: inline-block;
-  background: var(--accent-gradient);
-  color: white;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
-}
-
-.kb-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--text-color);
-  margin: 8px 0 0 0;
-}
-
-.kb-summary {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-color);
-  margin: 12px 0;
-  line-height: 1.5;
-}
-
-.kb-content {
-  font-size: 14px;
-  color: var(--text-color);
-  line-height: 1.7;
-  margin: 16px 0;
-  opacity: 0.9;
-}
-
-.kb-contacts {
-  margin: 16px 0;
-  padding: 12px;
-  background-color: var(--tips-bg);
-  border-radius: 8px;
-}
-
-.kb-contacts strong {
-  display: block;
-  font-size: 14px;
-  color: var(--text-color);
+.kb-result-text {
   margin-bottom: 8px;
+  line-height: 1.4;
 }
 
-.kb-contacts ul {
+.kb-contacts-box {
+  background-color: var(--win95-gray);
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  padding: 6px;
+  margin: 8px 0;
+}
+
+.kb-contacts-box strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.kb-contacts-box ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.kb-contacts li {
-  font-size: 14px;
-  color: var(--text-color);
-  padding: 4px 0;
-  line-height: 1.5;
+.kb-contacts-box li {
+  padding: 2px 0;
+  padding-left: 16px;
+  position: relative;
 }
 
-.kb-contacts li:before {
-  content: '\1F4DE ';
-  margin-right: 8px;
+.kb-contacts-box li::before {
+  content: '📞';
+  position: absolute;
+  left: 0;
 }
 
-.kb-updated {
-  font-size: 12px;
-  color: var(--text-color);
-  opacity: 0.7;
-  margin: 12px 0 0 0;
-  font-style: italic;
+/* No Results Message */
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 12px;
+}
+
+.msg-box-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--win95-gray);
+  border: 2px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.msg-box-icon::before {
+  content: 'ℹ️';
+  font-size: 20px;
+}
+
+.no-results p {
+  text-align: center;
 }
 
 /* ============================================
-   Mobile Responsive Styles
+   Tips Panel
+   ============================================ */
+.tips-panel {
+  margin-top: auto;
+}
+
+.tips-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.tips-icon-win95 {
+  width: 32px;
+  height: 32px;
+  background: var(--win95-gray);
+  border: 2px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tips-icon-win95::before {
+  content: '💡';
+  font-size: 16px;
+}
+
+.tips-text {
+  flex: 1;
+}
+
+.tips-text p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.tips-text p + p {
+  margin-top: 4px;
+}
+
+/* ============================================
+   Status Bar
+   ============================================ */
+.status-bar {
+  background-color: var(--win95-status-bar);
+  border-top: 1px solid var(--win95-btn-highlight);
+  padding: 2px 4px;
+  display: flex;
+  gap: 2px;
+}
+
+.status-section {
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  padding: 1px 6px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-section:last-child {
+  flex: 0 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: nwse-resize;
+}
+
+.resize-handle {
+  background-image: linear-gradient(135deg, transparent 50%, var(--win95-btn-shadow) 50%);
+  background-size: 4px 4px;
+}
+
+/* ============================================
+   Taskbar
+   ============================================ */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background-color: var(--win95-gray);
+  border-top: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  gap: 2px;
+  z-index: 100;
+}
+
+.start-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  padding: 2px 6px;
+  cursor: pointer;
+  font-family: "MS Sans Serif", sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.start-btn:active {
+  border-color: var(--win95-btn-dark-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-dark-shadow);
+}
+
+.start-icon {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #008000 40%, #00ff00 100%);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-icon::before {
+  content: '⊞';
+  color: white;
+  font-size: 12px;
+}
+
+.taskbar-divider {
+  width: 2px;
+  height: 22px;
+  border-left: 1px solid var(--win95-btn-shadow);
+  border-right: 1px solid var(--win95-btn-highlight);
+  margin: 0 2px;
+}
+
+.taskbar-window {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  padding: 2px 8px;
+  flex: 0 1 160px;
+  min-width: 100px;
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.taskbar-window.active {
+  border-color: var(--win95-btn-dark-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-dark-shadow);
+  background-color: var(--win95-gray);
+}
+
+.taskbar-icon {
+  width: 16px;
+  height: 16px;
+  background: var(--win95-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.taskbar-icon::before {
+  content: '📂';
+}
+
+.taskbar-tray {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tray-icon {
+  width: 20px;
+  height: 20px;
+  background: var(--win95-btn-face);
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.clock {
+  border: 1px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  padding: 2px 8px;
+  font-size: 11px;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ============================================
+   Start Menu
+   ============================================ */
+.start-menu {
+  position: fixed;
+  bottom: 28px;
+  left: 2px;
+  width: 180px;
+  background-color: var(--win95-gray);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  display: flex;
+  z-index: 101;
+}
+
+.start-menu-sidebar {
+  width: 21px;
+  background: linear-gradient(180deg, #000080 0%, #1084d0 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+}
+
+.sidebar-text {
+  color: var(--win95-white);
+  font-weight: bold;
+  font-size: 18px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 2px;
+}
+
+.sidebar-version {
+  color: #c0c0c0;
+  font-weight: bold;
+  font-size: 18px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin-top: 2px;
+}
+
+.start-menu-items {
+  flex: 1;
+  padding: 2px;
+}
+
+.menu-item-win95 {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  cursor: pointer;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.menu-item-win95:hover {
+  background-color: var(--win95-selected-bg);
+  color: var(--win95-selected-text);
+}
+
+.menu-arrow {
+  margin-left: auto;
+  font-size: 9px;
+}
+
+.menu-separator {
+  height: 1px;
+  background-color: var(--win95-btn-shadow);
+  margin: 3px 2px;
+  border-bottom: 1px solid var(--win95-btn-highlight);
+}
+
+/* Submenu */
+.start-submenu {
+  position: fixed;
+  left: 181px;
+  bottom: 120px;
+  width: 160px;
+  background-color: var(--win95-gray);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  padding: 2px;
+  z-index: 102;
+}
+
+/* ============================================
+   Dialog Window
+   ============================================ */
+.win95-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dialog-window {
+  position: relative;
+  width: 300px;
+  background-color: var(--win95-gray);
+  border: 2px solid;
+  border-color: var(--win95-btn-highlight) var(--win95-btn-dark-shadow) var(--win95-btn-dark-shadow) var(--win95-btn-highlight);
+  z-index: 201;
+}
+
+.dialog-content {
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.about-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--win95-btn-face);
+  border: 2px solid;
+  border-color: var(--win95-btn-shadow) var(--win95-btn-highlight) var(--win95-btn-highlight) var(--win95-btn-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.about-icon::before {
+  content: '📂';
+  font-size: 28px;
+}
+
+.about-text h3 {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.about-text p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.about-desc {
+  margin-top: 8px !important;
+  color: var(--win95-text);
+}
+
+.dialog-buttons {
+  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border-top: 1px solid var(--win95-btn-shadow);
+}
+
+.ok-btn {
+  min-width: 75px;
+}
+
+/* ============================================
+   Rain Canvas
+   ============================================ */
+#rainCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ============================================
+   Mobile Responsive
    ============================================ */
 @media screen and (max-width: 768px) {
-  .hero-section {
-    min-height: 100svh;
-    padding: 0 15px;
+  .win95-window {
+    width: 95vw;
+    max-height: 75vh;
+    top: 5%;
+    transform: translate(-50%, 0);
   }
 
-  .hero-section.hero-compact {
-    min-height: 0;
-    padding: 40px 15px 30px;
-  }
-
-  .hero-content {
-    max-width: 100%;
-    border-radius: 16px;
-    padding: 32px 20px 28px;
-    /* Disable entrance animations on mobile */
-    animation: none;
-  }
-
-  .hero-title {
-    font-size: 32px;
-    margin-bottom: 10px;
-    animation: none;
-  }
-
-  .hero-subtitle {
-    font-size: 15px;
-    margin-bottom: 28px;
-    animation: none;
-  }
-
-  .search-box {
-    max-width: 100%;
-    animation: none;
-  }
-
-  .search-input {
-    padding: 16px 50px 16px 50px;
-    font-size: 15px;
-    border-radius: 12px;
-  }
-
-  .search-icon {
-    left: 16px;
-    width: 20px;
-    height: 20px;
-  }
-
-  .results-section {
-    padding: 20px 15px;
-  }
-
-  /* Mobile radio button styles */
-  .site-filter-radios {
-    margin-top: 20px;
-    gap: 8px;
-    animation: none;
-  }
-
-  .radio-option {
-    padding: 6px 12px;
-  }
-
-  .radio-option span {
-    font-size: 12px;
-  }
-
-  /* Mobile table styles */
-  .search-results {
-    width: 100%;
-    margin: 20px 0;
-    overflow-x: hidden;
-  }
-
-  .search-results table {
-    display: block;
-  }
-
-  .search-results thead {
+  .desktop-icons {
     display: none;
   }
 
-  .search-results tbody tr {
-    display: block;
-    margin-bottom: 12px;
-    margin-right: 10px;
-    margin-left: 10px;
-    background: linear-gradient(
-      to bottom right,
-      var(--background-color),
-      color-mix(in srgb, var(--background-color) 97%, var(--primary-color))
-    );
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--border-color);
+  .radio-group {
+    flex-direction: column;
+    gap: 4px;
   }
 
-  .search-results td {
-    display: block;
-    padding: 4px 8px;
-    border: none;
-    position: relative;
-    padding-left: 95px;
-    font-size: 0.9em;
-    line-height: 1.4;
+  .search-box-wrapper {
+    flex-direction: column;
   }
 
-  .search-results td:before {
-    content: attr(data-label);
-    position: absolute;
-    left: 8px;
-    width: 75px;
-    margin-right: 15px;
-    font-weight: 600;
-    color: var(--primary-color);
+  .results-table {
+    font-size: 10px;
   }
 
-  .search-results td:not(:last-child) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    margin-bottom: 2px;
+  .results-table th,
+  .results-table td {
+    padding: 2px 4px;
   }
 
-  /* Hide Floor field on mobile */
-  .search-results td[data-label='Floor'] {
+  .tips-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .taskbar-window span {
     display: none;
   }
 
-  .search-results tbody tr:active {
-    transform: scale(0.995);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  .start-menu {
+    width: 160px;
   }
 
-  /* Knowledge base cards on mobile */
-  .knowledge-base-card {
-    padding: 16px;
-    margin-bottom: 16px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 12px;
-  }
-
-  .kb-title {
-    font-size: 20px;
-  }
-
-  .kb-summary {
-    font-size: 15px;
-  }
-
-  .kb-content {
-    font-size: 13px;
-  }
-
-  /* Disable results animation on mobile */
-  .search-results.results-visible {
-    animation: none;
+  .start-submenu {
+    left: 161px;
+    width: 140px;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .hero-title {
-    font-size: 28px;
-    letter-spacing: -0.3px;
-  }
-
-  .hero-subtitle {
-    font-size: 14px;
-  }
-
-  .search-input {
-    font-size: 14px;
-    padding: 14px 45px 14px 45px;
-  }
-
-  .search-icon {
-    left: 12px;
-    width: 18px;
-    height: 18px;
-  }
-
-  .theme-switch-wrapper {
-    top: 15px;
-    right: 15px;
-    padding: 6px;
-  }
-
-  .theme-icon {
-    font-size: 20px;
-  }
-
-  .tips-box {
-    margin: 20px 0;
-    padding: 16px;
-  }
-
-  .tips-header h2 {
-    font-size: 16px;
-  }
-
-  .tips-box p {
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .tips-icon {
-    width: 20px;
-    height: 20px;
+/* Disable complex cursor styles on touch devices */
+@media (hover: none) {
+  .title-btn:active,
+  .win95-btn:active {
+    padding: 4px 12px;
   }
 }

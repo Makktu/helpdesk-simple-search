@@ -33,54 +33,64 @@ The application uses a JSON file (`knowledge-base.json`) containing helpdesk kno
 ## Architecture
 
 ### Core Files
-- **index.html**: Main page structure with hero section, search interface, site filter radio buttons, and results area
+- **index.html**: Windows 95 desktop environment with: teal wallpaper, desktop icons, floating Win95 window (title bar, menu bar, content area, status bar), taskbar, Start menu, and About dialog
 - **script.js**: Main application logic including:
   - CSV location data loading and parsing
   - JSON knowledge base loading and parsing
-  - Unified search functionality across both data sources
+  - Unified search across both data sources (triggered by button click or Enter key)
   - Site filter radio button management
-  - Dark/light theme switching
+  - High Contrast theme toggle persisted in localStorage
+  - Win95 window controls (minimize, maximize, close, taskbar restore)
+  - Start menu and Programs submenu interaction
+  - Desktop icon double-click handlers
+  - Live clock in system tray
+  - About dialog (opened via Help menu)
   - Easter egg trigger for rain animation
 - **rainAnimation.js**: Rain animation class triggered by searching "make it rain"
 - **knowledge-base.json**: Knowledge base articles in JSON format
-- **styles.css**: "Immersive Glass UI" design including:
-  - Full-viewport hero (`min-height: 100vh`) with centered glass-morphism panel
-  - Hospital image (uhcw_image.png) as animated hero background
-  - Glass panel (`backdrop-filter: blur(20px)`) holding search bar and filters
-  - Staggered entrance animations (title, subtitle, search, filters with increasing delays)
-  - Enhanced search input with `border-radius: 16px`, focus glow ring, subtle scale
-  - Glass radio filter pills with semi-transparent backgrounds
-  - Scroll indicator chevron at bottom of hero with bounce animation
-  - Deep navy/blue palette (Tailwind-inspired) with rich dark mode (`#0f172a` base)
-  - Accent gradient (`#2563eb` to `#7c3aed`) on badges and table headers
-  - KB cards with white bg in light mode, gradient badges, 16px radius
-  - Results entrance animation (fade + slide up) triggered via JS class toggle
-  - `@supports` fallback for browsers without `backdrop-filter`
-  - Dark mode support via CSS custom properties with deep navy palette
-  - Responsive mobile styles with animations disabled
-  - Table-to-card layout transformation on mobile
+- **styles.css**: Windows 95 style design including:
+  - CSS custom properties for the full Win95 color palette (`--win95-teal`, `--win95-gray`, `--win95-blue`, etc.)
+  - High Contrast dark theme via `[data-theme="dark"]` overrides
+  - Desktop wallpaper (`#008080` teal) with hospital image at 0.15 opacity as subtle background
+  - Desktop icons (My Computer, Network Neighborhood, Recycle Bin, Helpdesk95.exe) using emoji inside CSS-drawn icon frames
+  - Win95 window chrome: raised/sunken borders using 4-value `border-color` shorthand (`highlight / dark-shadow / dark-shadow / highlight` = raised; reversed = sunken)
+  - Title bar with `linear-gradient(90deg, #000080, #1084d0)` and 16×14px window control buttons
+  - Menu bar, panels with gradient headers, Win95 form controls (inputs, buttons, fieldsets, radio buttons)
+  - Custom Win95 scrollbar via `::-webkit-scrollbar` pseudo-elements
+  - Results table with raised/sunken cell borders; row hover highlights with navy selection color
+  - KB result cards in Win95 panel style with gray contacts box
+  - Status bar with three sunken sections and a dotted resize handle
+  - Taskbar at fixed bottom: Start button, divider, window button, system tray (HC toggle + clock)
+  - Start menu with navy sidebar ("WINDOWS 95"), menu items with arrow indicators, Programs submenu
+  - About dialog as floating Win95 modal with overlay
+  - `MS Sans Serif` / `Microsoft Sans Serif` font stack at 11px base size
+  - Mobile breakpoint at 768px: hides desktop icons, stacks search controls vertically, shrinks window
 
 ### Key Features
-1. **Immersive Glass UI Hero**: Full-viewport hero with hospital image backdrop and frosted glass panel
-   - Glass-morphism panel (`backdrop-filter: blur(20px)`) centered on screen with `border-radius: 24px`
-   - Staggered entrance animations: panel (0s), title (0.15s), subtitle (0.25s), search (0.35s), filters (0.45s)
-   - Scroll indicator chevron with bounce animation at bottom of hero
-   - Very slow, subtle 70-second background pan animation
-   - All entrance animations disabled on mobile and for `prefers-reduced-motion`
-2. **Unified Search**: Real-time search across both location data and knowledge base with debouncing
+1. **Windows 95 Desktop Environment**: Full desktop simulation with wallpaper, icons, taskbar, and Start menu
+   - Hospital image used as faint (0.15 opacity) desktop wallpaper background
+   - Desktop icons: double-click "Helpdesk95.exe" to restore window; "My Computer" opens About dialog; others show alert messages
+   - Start button with Windows logo icon; Programs submenu appears on hover
+   - Live clock in system tray updating every second
+2. **Win95 Application Window**: Authentic chrome with gradient title bar, menu bar, status bar
+   - Minimize hides the window (restore via taskbar item); Maximize toggles `.maximized` class for full-screen
+   - Close hides the window (same as minimize — no data is destroyed)
+   - Help menu item opens the About dialog
+3. **Unified Search**: Search triggered by "Find Now" button or Enter key (no debouncing)
    - Locations: Searches Site, Building, Department, Description, Room Number, and Floor fields
    - Knowledge Base: Searches title, summary, content, category, and keywords
    - Results show knowledge base cards first, followed by location table
-   - Results section has entrance fade animation on each new search
-3. **Site Filter**: Glass radio filter pills within the hero panel
-   - Filters location results only (knowledge base shows all matches)
-   - Semi-transparent white backgrounds matching glass aesthetic
-4. **Knowledge Base Cards**: Custom card layout for knowledge base articles
-   - Gradient accent badge, title, summary, content, contacts, and last updated date
-   - White bg in light mode, dark navy in dark mode, 16px border-radius
-5. **Theme Toggle**: Fixed position rounded-square toggle with glass-morphism, rotation on hover, persisted in localStorage
-6. **Mobile Responsive**: `100svh` hero, all animations disabled, glass panel full-width, table becomes cards
-7. **Easter Eggs**: Rain animation triggered by "make it rain" search term
+   - Status bar shows "X object(s)" count and "Search complete" / "No results found"
+4. **Site Filter**: Win95-style radio buttons inside a `<fieldset>` with raised border
+   - Filters location results only (knowledge base always shows all matches)
+   - Populated dynamically from unique site values in the CSV
+5. **Knowledge Base Cards**: Win95 panel-style cards with gray header bar and document icon
+   - Summary, content, contacts box (gray inset panel with phone emoji bullets), last updated
+6. **High Contrast Theme**: "HC" button in system tray toggles `[data-theme="dark"]` on `<html>`
+   - Dark theme inverts to black background, white text, high-contrast borders
+   - Persisted in localStorage with key `'theme'`
+7. **Mobile Responsive**: Window repositioned to top-5% on narrow screens; desktop icons hidden; search controls stack vertically
+8. **Easter Egg**: Rain animation triggered by searching "make it rain"
 
 ## Data Structure
 
@@ -96,7 +106,7 @@ The CSV is parsed into objects with the following schema:
 }
 ```
 
-Note: Some columns from the CSV are skipped during parsing. The mapping is hardcoded in script.js:100-117.
+Note: Some columns from the CSV are skipped during parsing. The mapping is hardcoded in the `loadLocationData` function in script.js.
 
 ## Development
 
@@ -107,37 +117,19 @@ Open `index.html` directly in a browser. No build process, server, or dependenci
 Since this is a static site, refresh the browser after making changes. Test both desktop and mobile viewports.
 
 ### Mobile Testing
-The application has specific mobile breakpoints:
-- `@media (max-width: 768px)`: Scales radio buttons, transforms location table to cards, scales hero section, adjusts knowledge base card sizing
-- `@media (max-width: 480px)`: Further adjusts hero title, subtitle, search bar, and theme toggle sizing
+The application has one primary mobile breakpoint:
+- `@media (max-width: 768px)`: Hides desktop icons, stacks radio buttons and search controls vertically, repositions window to top of screen, reduces table font size and padding, hides taskbar window label text
 
-### Design Philosophy — "Immersive Glass UI"
-- Full-viewport hero creates dramatic, app-like first impression
-- Frosted glass panel (`backdrop-filter: blur(20px)`) centers all interactive controls
-- Deep navy/blue Tailwind-inspired palette replaces flat Google-gray look
-  - Light mode: `#f8fafc` results bg, `#ffffff` cards, `#1e3a8a` hero
-  - Dark mode: `#0b1120` results bg, `#1e293b` cards, `#0c1a3d` hero
-- Accent gradient (`#2563eb` → `#7c3aed`) on badges and table headers
-- Hospital image prominently displayed as animated hero background
-  - Desktop: `background-size: 100% auto` to show full width of image
-  - Mobile: `background-size: auto 100%` to show full height on smaller screens
-  - Lower opacity gradient (0.6-0.65 alpha) ensures image is clearly visible
-  - GPU-accelerated CSS transforms for optimal performance
-- Staggered entrance animations create inspiring first impression
-- `@supports` fallback for `backdrop-filter` uses solid semi-transparent bg
-- Large, accessible search bar with focus glow ring is the primary interaction point
-- Results section has entrance fade animation and distinct visual separation
-- Rounded-square theme toggle with glass-morphism and rotation hover effect
-
-### Background Animation Technical Details
-The hero background uses a performant animation technique:
-- **Implementation**: CSS `::before` pseudo-element with `transform: translateY()` animation
-- **Performance**: GPU-accelerated transforms (not background-position) prevent repaints
-- **Layering**: Three layers - animated image (z-index: 0), gradient overlay (z-index: 1), content (z-index: 2)
-- **Duration**: 70 seconds per cycle with ease-in-out timing for very slow, subtle movement
-- **Accessibility**: Animation disabled for users with `prefers-reduced-motion: reduce`
-- **Mobile**: Animation disabled on screens ≤768px to preserve battery and performance
-- **Method**: Pseudo-element height set to 320%, translates -69% at midpoint to reveal the entire (or almost entire) hospital image
+### Design Philosophy — "Windows 95"
+- Authentic Win95 aesthetic: flat silver-gray (`#c0c0c0`) surfaces, raised/sunken 2px borders using 4-color `border-color` shorthand
+- Raised = `white black black white` (top-left bright, bottom-right dark); sunken = reversed
+- Navy title bar gradient (`#000080` → `#1084d0`) matches classic Win95 active window title
+- `MS Sans Serif` at 11px is the period-accurate font; fallback chain: `Microsoft Sans Serif`, `Segoe UI`, Tahoma
+- Teal desktop (`#008080`) is the iconic Win95 default wallpaper color
+- Hospital image is present but kept very faint (0.15 opacity) so it doesn't compete with the Win95 UI chrome
+- No CSS animations anywhere (except rain easter egg canvas); Win95 had no animated UI transitions
+- High Contrast dark mode (`[data-theme="dark"]`) mirrors the Win95 Accessibility > High Contrast Black scheme
+- Results count phrased as "X object(s)" matching Win95 Explorer status bar language
 
 ## Known Issues
 
@@ -146,10 +138,11 @@ Some CSV data is malformed but results remain accurate. For example, searching "
 ## Important Considerations
 
 - **No Package Manager**: This project intentionally has no package.json, npm, or build tools
-- **Theme Persistence**: Theme preference stored in localStorage with key 'theme'
+- **Theme Persistence**: Theme preference stored in localStorage with key `'theme'`
 - **Data Parsing**:
   - CSV: Custom CSV parser in script.js handles quoted values and trims whitespace
   - JSON: Knowledge base loaded via fetch API
 - **Filter State**: Active site filter stored in `activeFilters.site` and applied to location searches only
-- **Debouncing**: Search input debounced to 300ms to reduce unnecessary searches
+- **Search Trigger**: No debouncing — search fires on button click or Enter key only
 - **Knowledge Base**: Articles appear once per search result; cleared properly between searches to avoid duplication
+- **Window State**: Minimize/close both just hide the DOM element; no state is lost, and the taskbar item restores it

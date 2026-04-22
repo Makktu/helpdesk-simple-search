@@ -3,101 +3,245 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Helpdesk</title>
+    <title>Helpdesk 95</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="theme-switch-wrapper">
-      <span id="theme-toggle" class="theme-icon">☀️</span>
+    <!-- Desktop Wallpaper -->
+    <div class="desktop-wallpaper"></div>
+
+    <!-- Desktop Icons -->
+    <div class="desktop-icons">
+      <div class="desktop-icon" id="myComputerIcon">
+        <div class="icon-image my-computer"></div>
+        <span>My Computer</span>
+      </div>
+      <div class="desktop-icon" id="networkIcon">
+        <div class="icon-image network"></div>
+        <span>Network Neighborhood</span>
+      </div>
+      <div class="desktop-icon" id="recycleIcon">
+        <div class="icon-image recycle-bin"></div>
+        <span>Recycle Bin</span>
+      </div>
+      <div class="desktop-icon" id="helpIcon">
+        <div class="icon-image help"></div>
+        <span>Helpdesk95.exe</span>
+      </div>
     </div>
 
-    <!-- Hero Section -->
-    <div class="hero-section">
-      <div class="hero-content">
-        <h1 class="hero-title">Helpdesk</h1>
-        <p class="hero-subtitle">
-          Find rooms, locations, and answers across all UHCW sites
-        </p>
-        <div class="search-box">
-          <svg
-            class="search-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-            />
-          </svg>
-          <input
-            type="text"
-            class="search-input"
-            id="locationSearch"
-            placeholder="Search rooms, locations, or knowledge base..."
-          />
-          <button class="clear-button" id="clearSearch" style="display: none">
-            <svg
-              focusable="false"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              ></path>
-            </svg>
-          </button>
+    <!-- Main Helpdesk Window -->
+    <div class="win95-window" id="helpdeskWindow">
+      <!-- Title Bar -->
+      <div class="title-bar">
+        <div class="title-bar-icon"></div>
+        <span class="title-bar-text">Helpdesk 95</span>
+        <div class="title-bar-buttons">
+          <button class="title-btn minimize" aria-label="Minimize">_</button>
+          <button class="title-btn maximize" aria-label="Maximize">□</button>
+          <button class="title-btn close" aria-label="Close">×</button>
         </div>
-        <div class="site-filter-radios" id="siteFilterRadios">
-          <label class="radio-option">
-            <input type="radio" name="siteFilter" value="" checked />
-            <span>All Sites</span>
-          </label>
+      </div>
+
+      <!-- Menu Bar -->
+      <div class="menu-bar">
+        <span class="menu-item" data-menu="file">File</span>
+        <span class="menu-item" data-menu="edit">Edit</span>
+        <span class="menu-item" data-menu="view">View</span>
+        <span class="menu-item" data-menu="help">Help</span>
+      </div>
+
+      <!-- Window Content -->
+      <div class="window-content">
+        <!-- Search Panel -->
+        <div class="panel">
+          <div class="panel-header">Search Locations & Knowledge Base</div>
+          <div class="panel-content">
+            <div class="search-container">
+              <label class="field-label" for="locationSearch">Find what:</label>
+              <div class="search-box-wrapper">
+                <input
+                  type="text"
+                  id="locationSearch"
+                  class="win95-input"
+                  placeholder="Enter room number, department, or keyword..."
+                />
+                <button class="win95-btn search-btn" id="searchBtn">
+                  Find Now
+                </button>
+                <button class="win95-btn clear-btn" id="clearBtn">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Site Filter -->
+            <div class="filter-section">
+              <fieldset class="win95-fieldset">
+                <legend>Site Filter</legend>
+                <div class="radio-group" id="siteFilterRadios">
+                  <label class="win95-radio">
+                    <input type="radio" name="siteFilter" value="" checked />
+                    <span>All Sites</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Area -->
+        <div class="results-panel" id="searchResults" style="display: none">
+          <div class="panel-header">Search Results</div>
+          <div class="panel-content results-content">
+            <div id="resultsContainer"></div>
+            <div id="noResults" class="no-results" style="display: none">
+              <div class="msg-box-icon"></div>
+              <p>No results found for your search.</p>
+              <button class="win95-btn ok-btn">OK</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips Panel -->
+        <div class="panel tips-panel">
+          <div class="panel-header">Tips</div>
+          <div class="panel-content">
+            <div class="tips-content">
+              <div class="tips-icon-win95"></div>
+              <div class="tips-text">
+                <p>
+                  • Search for room numbers and departments, partial or full.
+                </p>
+                <p>
+                  • All locations: Walsgrave, Rugby St Cross, FM Building, CSB,
+                  EPR Portkabins, MHU.
+                </p>
+                <p>• Try searching "make it rain" for a surprise!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <div class="status-section">Ready</div>
+        <div class="status-section" id="resultCount"></div>
+        <div class="status-section resize-handle"></div>
+      </div>
+    </div>
+
+    <!-- About Dialog (Hidden by default) -->
+    <div class="win95-dialog" id="aboutDialog" style="display: none">
+      <div class="dialog-overlay"></div>
+      <div class="dialog-window">
+        <div class="title-bar">
+          <span class="title-bar-text">About Helpdesk</span>
+          <div class="title-bar-buttons">
+            <button class="title-btn close" id="closeAbout">×</button>
+          </div>
+        </div>
+        <div class="dialog-content">
+          <div class="about-icon"></div>
+          <div class="about-text">
+            <h3>Helpdesk Search Tool</h3>
+            <p>Version 1.0</p>
+            <p>© 2024 UHCW NHS Trust</p>
+            <p class="about-desc">
+              A Windows 95 style interface for searching hospital locations and
+              accessing the knowledge base.
+            </p>
+          </div>
+        </div>
+        <div class="dialog-buttons">
+          <button class="win95-btn ok-btn">OK</button>
         </div>
       </div>
     </div>
 
-    <!-- Results Section -->
-    <div class="results-section">
-      <div class="results-container">
-        <div id="searchResults" class="search-results" style="display: none">
-          <table>
-            <thead>
-              <tr>
-                <th>Site</th>
-                <th>Location</th>
-                <th>Department</th>
-                <th>Description</th>
-                <th>Room Number</th>
-                <th>Floor</th>
-              </tr>
-            </thead>
-            <tbody id="resultsBody"></tbody>
-          </table>
-          <div id="noResults" style="display: none">
-            <p>No results for that search</p>
-          </div>
+    <!-- Taskbar -->
+    <div class="taskbar">
+      <button class="start-btn" id="startBtn">
+        <div class="start-icon"></div>
+        <span>Start</span>
+      </button>
+      <div class="taskbar-divider"></div>
+      <div class="taskbar-window active" id="taskbarItem">
+        <div class="taskbar-icon"></div>
+        <span>Helpdesk95</span>
+      </div>
+      <div class="taskbar-tray">
+        <div
+          class="tray-icon theme-toggle"
+          id="themeToggle"
+          title="Toggle High Contrast"
+        >
+          <span>HC</span>
         </div>
+        <div class="clock" id="clock">12:00 PM</div>
+      </div>
+    </div>
 
-        <div class="tips-box">
-          <div class="tips-header">
-            <svg
-              class="tips-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
-              />
-            </svg>
-            <h2>Tips</h2>
-          </div>
-          <p>Search for room numbers and departments, partial or full.</p>
-          <p>
-            All locations: Walsgrave, Rugby St Cross, the FM Building, CSB, the
-            EPR 'Portkabins' - and the MHU.
-          </p>
+    <!-- Start Menu (Hidden by default) -->
+    <div class="start-menu" id="startMenu" style="display: none">
+      <div class="start-menu-sidebar">
+        <span class="sidebar-text">WINDOWS</span>
+        <span class="sidebar-version">95</span>
+      </div>
+      <div class="start-menu-items">
+        <div class="menu-item-win95" id="programsMenu">
+          <span class="menu-arrow">►</span>
+          <span>Programs</span>
+        </div>
+        <div class="menu-item-win95" id="documentsMenu">
+          <span class="menu-arrow">►</span>
+          <span>Documents</span>
+        </div>
+        <div class="menu-item-win95" id="settingsMenu">
+          <span class="menu-arrow">►</span>
+          <span>Settings</span>
+        </div>
+        <div class="menu-item-win95" id="findMenu">
+          <span class="menu-arrow">►</span>
+          <span>Find</span>
+        </div>
+        <div class="menu-item-win95" id="helpMenu">
+          <span class="menu-arrow">►</span>
+          <span>Help</span>
+        </div>
+        <div class="menu-separator"></div>
+        <div class="menu-item-win95" id="runMenu">
+          <span>Run...</span>
+        </div>
+        <div class="menu-separator"></div>
+        <div class="menu-item-win95" id="shutdownMenu">
+          <span>Shut Down...</span>
         </div>
       </div>
     </div>
+
+    <!-- Programs Submenu -->
+    <div class="start-submenu" id="programsSubmenu" style="display: none">
+      <div class="menu-item-win95" id="accessoriesMenu">
+        <span class="menu-arrow">►</span>
+        <span>Accessories</span>
+      </div>
+      <div class="menu-item-win95" id="startupMenu">
+        <span class="menu-arrow">►</span>
+        <span>StartUp</span>
+      </div>
+      <div class="menu-item-win95" id="msdosMenu">
+        <span>MS-DOS Prompt</span>
+      </div>
+      <div class="menu-item-win95" id="windowsExplorerMenu">
+        <span>Windows Explorer</span>
+      </div>
+    </div>
+
+    <!-- Rain Canvas -->
+    <canvas id="rainCanvas"></canvas>
+
     <script src="script.js"></script>
     <script src="rainAnimation.js"></script>
   </body>
