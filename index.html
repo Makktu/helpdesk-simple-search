@@ -3,234 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Helpdesk95</title>
+    <title>Helpdesk Search</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Desktop Wallpaper -->
-    <div class="desktop-wallpaper"></div>
+    <div class="app" id="app">
+      <div class="search-header">
+        <h1 class="app-title">Helpdesk Room Search</h1>
 
-    <!-- Desktop Icons -->
-    <div class="desktop-icons">
-      <div class="desktop-icon" id="myComputerIcon">
-        <div class="icon-image my-computer"></div>
-        <span>My Computer</span>
-      </div>
-      <div class="desktop-icon" id="networkIcon">
-        <div class="icon-image network"></div>
-        <span>Network Neighborhood</span>
-      </div>
-      <div class="desktop-icon" id="recycleIcon">
-        <div class="icon-image recycle-bin"></div>
-        <span>Recycle Bin</span>
-      </div>
-      <div class="desktop-icon" id="helpIcon">
-        <div class="icon-image help"></div>
-        <span>Helpdesk95.exe</span>
-      </div>
-    </div>
-
-    <!-- Main Helpdesk Window -->
-    <div class="win95-window" id="helpdeskWindow">
-      <!-- Title Bar -->
-      <div class="title-bar">
-        <div class="title-bar-icon"></div>
-        <span class="title-bar-text">Helpdesk95</span>
-        <div class="title-bar-buttons">
-          <button class="title-btn minimize" aria-label="Minimize">_</button>
-          <button class="title-btn maximize" aria-label="Maximize">□</button>
-          <button class="title-btn close" aria-label="Close">×</button>
-        </div>
-      </div>
-
-      <!-- Menu Bar -->
-      <div class="menu-bar">
-        <span class="menu-item" data-menu="file">File</span>
-        <span class="menu-item" data-menu="edit">Edit</span>
-        <span class="menu-item" data-menu="view">View</span>
-        <span class="menu-item" data-menu="help">Help</span>
-      </div>
-
-      <!-- Window Content -->
-      <div class="window-content">
-        <!-- Search Panel -->
-        <div class="panel">
-          <div class="panel-header">Search Locations & Knowledge Base</div>
-          <div class="panel-content">
-            <div class="search-container">
-              <label class="field-label" for="locationSearch">Find what:</label>
-              <div class="search-box-wrapper">
-                <input
-                  type="text"
-                  id="locationSearch"
-                  class="win95-input"
-                  placeholder="Enter room number, department, or keyword..."
-                />
-                <button class="win95-btn search-btn" id="searchBtn">
-                  Find Now
-                </button>
-                <button class="win95-btn clear-btn" id="clearBtn">Clear</button>
-              </div>
-            </div>
-
-            <!-- Site Filter -->
-            <div class="filter-section">
-              <fieldset class="win95-fieldset">
-                <legend>Site Filter</legend>
-                <div class="radio-group" id="siteFilterRadios">
-                  <label class="win95-radio">
-                    <input type="radio" name="siteFilter" value="" checked />
-                    <span>All Sites</span>
-                  </label>
-                </div>
-              </fieldset>
-            </div>
+        <div class="search-bar-container">
+          <div class="search-bar-inner">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="text"
+              id="locationSearch"
+              class="search-input"
+              placeholder="Search rooms, departments, buildings..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button class="clear-btn" id="clearBtn" aria-label="Clear search" style="display: none">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
           </div>
         </div>
 
-        <!-- Results Area -->
-        <div class="results-panel" id="searchResults" style="display: none">
-          <div class="panel-header">Search Results</div>
-          <div class="panel-content results-content">
-            <div id="resultsContainer"></div>
-            <div id="noResults" class="no-results" style="display: none">
-              <div class="msg-box-icon"></div>
-              <p>No results found for your search.</p>
-              <button class="win95-btn ok-btn">OK</button>
-            </div>
-          </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-site="">All Locations</button>
+          <button class="filter-btn" data-site="Walsgrave">Walsgrave</button>
+          <button class="filter-btn" data-site="St. Cross">St Cross</button>
         </div>
 
-        <!-- Tips Panel -->
-        <div class="panel tips-panel">
-          <div class="panel-header">Tips</div>
-          <div class="panel-content">
-            <div class="tips-content">
-              <div class="tips-icon-win95"></div>
-              <div class="tips-text">
-                <p>
-                  • Search for room numbers and departments, partial or full.
-                </p>
-                <p>
-                  • All locations: Walsgrave, Rugby St Cross, FM Building, CSB,
-                  EPR Portkabins, MHU.
-                </p>
-                <p>• Try searching "make it rain" for a surprise!</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="status-text" id="statusText"></div>
       </div>
 
-      <!-- Status Bar -->
-      <div class="status-bar">
-        <div class="status-section">Ready</div>
-        <div class="status-section" id="resultCount"></div>
-        <div class="status-section resize-handle"></div>
-      </div>
+      <main class="results-area" id="searchResults" style="display: none">
+        <div id="resultsContainer"></div>
+        <div id="noResults" class="no-results" style="display: none">
+          <p>No results found.</p>
+        </div>
+      </main>
     </div>
 
-    <!-- About Dialog (Hidden by default) -->
-    <div class="win95-dialog" id="aboutDialog" style="display: none">
-      <div class="dialog-overlay"></div>
-      <div class="dialog-window">
-        <div class="title-bar">
-          <span class="title-bar-text">About Helpdesk</span>
-          <div class="title-bar-buttons">
-            <button class="title-btn close" id="closeAbout">×</button>
-          </div>
-        </div>
-        <div class="dialog-content">
-          <div class="about-icon"></div>
-          <div class="about-text">
-            <h3>Helpdesk Search Tool</h3>
-            <p>Version 1.0</p>
-            <p>© 2024 UHCW NHS Trust</p>
-            <p class="about-desc">
-              A Windows 95 style interface for searching hospital locations and
-              accessing the knowledge base.
-            </p>
-          </div>
-        </div>
-        <div class="dialog-buttons">
-          <button class="win95-btn ok-btn">OK</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Taskbar -->
-    <div class="taskbar">
-      <button class="start-btn" id="startBtn">
-        <div class="start-icon"></div>
-        <span>Start</span>
-      </button>
-      <div class="taskbar-divider"></div>
-      <div class="taskbar-window active" id="taskbarItem">
-        <div class="taskbar-icon"></div>
-        <span>Helpdesk95</span>
-      </div>
-      <div class="taskbar-tray">
-        <div class="clock" id="clock">12:00 PM</div>
-      </div>
-    </div>
-
-    <!-- Start Menu (Hidden by default) -->
-    <div class="start-menu" id="startMenu" style="display: none">
-      <div class="start-menu-sidebar">
-        <span class="sidebar-text">WINDOWS</span>
-        <span class="sidebar-version">95</span>
-      </div>
-      <div class="start-menu-items">
-        <div class="menu-item-win95" id="programsMenu">
-          <span class="menu-arrow">►</span>
-          <span>Programs</span>
-        </div>
-        <div class="menu-item-win95" id="documentsMenu">
-          <span class="menu-arrow">►</span>
-          <span>Documents</span>
-        </div>
-        <div class="menu-item-win95" id="settingsMenu">
-          <span class="menu-arrow">►</span>
-          <span>Settings</span>
-        </div>
-        <div class="menu-item-win95" id="findMenu">
-          <span class="menu-arrow">►</span>
-          <span>Find</span>
-        </div>
-        <div class="menu-item-win95" id="helpMenu">
-          <span class="menu-arrow">►</span>
-          <span>Help</span>
-        </div>
-        <div class="menu-separator"></div>
-        <div class="menu-item-win95" id="runMenu">
-          <span>Run...</span>
-        </div>
-        <div class="menu-separator"></div>
-        <div class="menu-item-win95" id="shutdownMenu">
-          <span>Shut Down...</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Programs Submenu -->
-    <div class="start-submenu" id="programsSubmenu" style="display: none">
-      <div class="menu-item-win95" id="accessoriesMenu">
-        <span class="menu-arrow">►</span>
-        <span>Accessories</span>
-      </div>
-      <div class="menu-item-win95" id="startupMenu">
-        <span class="menu-arrow">►</span>
-        <span>StartUp</span>
-      </div>
-      <div class="menu-item-win95" id="msdosMenu">
-        <span>MS-DOS Prompt</span>
-      </div>
-      <div class="menu-item-win95" id="windowsExplorerMenu">
-        <span>Windows Explorer</span>
-      </div>
-    </div>
-
-    <!-- Rain Canvas -->
     <canvas id="rainCanvas"></canvas>
 
     <script src="script.js"></script>
