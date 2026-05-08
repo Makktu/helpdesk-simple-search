@@ -328,6 +328,44 @@ body {
 }
 
 /* ============================================
+   Mobile location result cards
+   ============================================ */
+.results-mobile-cards {
+  display: none;
+}
+
+.mobile-result-card {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.mobile-card-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.mobile-card-label {
+  flex: 0 0 80px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.mobile-card-value {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* ============================================
    Mobile
    ============================================ */
 @media screen and (max-width: 768px) {
@@ -348,16 +386,12 @@ body {
     padding: 12px 16px;
   }
 
-  .results-table th,
-  .results-table td {
-    padding: 8px 10px;
-    font-size: 0.8rem;
+  .results-table-wrapper {
+    display: none;
   }
 
-  .results-table th:nth-child(3),
-  .results-table td:nth-child(3),
-  .results-table th:nth-child(6),
-  .results-table td:nth-child(6) {
-    display: none;
+  .results-mobile-cards {
+    display: block;
+    width: 100%;
   }
 }

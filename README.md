@@ -48,3 +48,6 @@ E.g. if you search 'rainsbrook', the first results displayed are for rooms that 
 ### 16 May 2025
 - Added 'make it rain' feature. Rain animation triggered when 'make it rain' is searched.
 - Added 'Fly Game' feature. A simple clicker game triggered when 'flies' is searched. (Enter 'no flies' to stop the game.)
+
+### 8 May 2025
+Simplification of all things for this app. Plain dark style, minimal visual clutter, sensible mobile card style for results.

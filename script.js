@@ -183,6 +183,18 @@ function displayResults(locationResults, knowledgeResults = []) {
     `;
     wrapper.appendChild(table);
     resultsContainer.appendChild(wrapper);
+
+    const mobileCards = document.createElement('div');
+    mobileCards.className = 'results-mobile-cards';
+    mobileCards.innerHTML = locationResults.map(l => `
+      <div class="mobile-result-card">
+        <div class="mobile-card-row"><span class="mobile-card-label">Dept</span><span class="mobile-card-value">${l.Department || '-'}</span></div>
+        <div class="mobile-card-row"><span class="mobile-card-label">Building</span><span class="mobile-card-value">${l.Building || '-'}</span></div>
+        <div class="mobile-card-row"><span class="mobile-card-label">Description</span><span class="mobile-card-value">${l.Description || '-'}</span></div>
+        <div class="mobile-card-row"><span class="mobile-card-label">Room</span><span class="mobile-card-value">${l['Room Num'] || '-'}</span></div>
+      </div>
+    `).join('');
+    resultsContainer.appendChild(mobileCards);
   }
 }
 
